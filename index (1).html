@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Recall — E&amp;M equations, Ch 21–27 (Halliday &amp; Resnick)</title>
+<meta name="description" content="Active-recall flashcard trainer for the electromagnetism equations, units, geometry, and integrals in Halliday &amp; Resnick chapters 21–27.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+  :root{
+    --paper:#E7EAF0; --grid:rgba(31,68,216,.05);
+    --panel:#FBFCFE; --track:#DAE0E9;
+    --ink:#12161F; --muted:#5A6472; --faint:#8A93A2;
+    --line:#D6DCE5; --line-strong:#C3CBD8;
+    --accent:#1F44D8; --accent-soft:#E7ECFB; --accent-ink:#173097;
+    --ok:#0F7B5A; --ok-soft:#E1F2EB; --ok-line:#BFE3D5;
+    --warn:#B5620F; --warn-soft:#F6ECDA; --warn-line:#E8D3B0;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:11px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0E1014; --grid:rgba(120,150,255,.05);
+      --panel:#1B1F26; --track:#262B34;
+      --ink:#EAECEF; --muted:#A4ADBB; --faint:#727B89;
+      --line:#2A2F38; --line-strong:#3A4049;
+      --accent:#6E86F0; --accent-soft:#1E2A55; --accent-ink:#B8C6FB;
+      --ok:#4FD0A3; --ok-soft:#12332A; --ok-line:#1E4A3C;
+      --warn:#E4A24E; --warn-soft:#382913; --warn-line:#5A431F;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--paper);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+    min-height:100vh; padding:24px 16px 64px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .glyph{flex:0 0 auto}
+  .brand h1{font-size:16px;letter-spacing:.02em;margin:0;font-weight:600}
+  .brand p{margin:2px 0 0;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em}
+  .setup{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+  .chip{font-family:var(--mono);font-size:12.5px;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:8px 11px;border-radius:9px;cursor:pointer;user-select:none;display:flex;gap:8px;align-items:center;transition:border-color .12s,background .12s}
+  .chip .n{font-weight:600;color:var(--ink)}
+  .chip .c{font-size:10px;color:var(--faint)}
+  .chip[data-on="1"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .chip[data-on="1"] .n,.chip[data-on="1"] .c{color:var(--accent-ink)}
+  .chip:hover{border-color:var(--line-strong)}
+  .selall{display:flex;gap:14px;margin:12px 0 6px;font-family:var(--mono);font-size:11px}
+  .selall button{background:none;border:none;color:var(--accent);cursor:pointer;padding:0;font-family:inherit;font-size:inherit;letter-spacing:.04em}
+  .selall button:hover{text-decoration:underline}
+  .opts{display:flex;flex-direction:column;gap:11px;margin:18px 0 20px;padding-top:16px;border-top:1px solid var(--line)}
+  .opt{display:flex;align-items:center;gap:11px;font-size:13.5px;cursor:pointer}
+  .opt input{appearance:none;-webkit-appearance:none;width:38px;height:22px;border-radius:11px;background:var(--track);position:relative;cursor:pointer;flex:0 0 auto;transition:background .15s}
+  .opt input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .opt input:checked{background:var(--accent)}
+  .opt input:checked::after{transform:translateX(16px)}
+  .opt .sub{color:var(--muted);font-size:12px}
+  .go{width:100%;padding:15px;border:none;border-radius:11px;background:var(--accent);color:#fff;font-family:var(--sans);font-size:14.5px;font-weight:600;cursor:pointer;transition:filter .12s,transform .06s}
+  .go:hover{filter:brightness(1.06)}
+  .go:active{transform:translateY(1px)}
+  .go:disabled{opacity:.5;cursor:not-allowed}
+  .count-hint{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .stat{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+  .stat b{color:var(--ink)}
+  .track{flex:1;height:6px;background:var(--track);border-radius:3px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+  .review-pill{font-family:var(--mono);font-size:11px;color:var(--warn);background:var(--warn-soft);padding:3px 9px;border-radius:20px}
+  .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:30px 26px;min-height:300px;display:flex;flex-direction:column}
+  .ct{position:absolute;width:13px;height:13px;pointer-events:none}
+  .ct.tl{top:11px;left:11px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
+  .ct.tr{top:11px;right:11px;border-top:2px solid var(--accent);border-right:2px solid var(--accent)}
+  .ct.bl{bottom:11px;left:11px;border-bottom:2px solid var(--accent);border-left:2px solid var(--accent)}
+  .ct.br{bottom:11px;right:11px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent)}
+  .chap{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+  .plabel{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+  .prompt{font-size:21px;font-weight:600;line-height:1.34;margin:0;max-width:48ch}
+  .prompt .rev-eq{font-weight:400}
+  .scratch{width:100%;min-height:70px;margin-top:18px;resize:vertical;border:1px dashed var(--line-strong);border-radius:10px;padding:11px 13px;font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--paper);line-height:1.6}
+  .scratch::placeholder{color:var(--faint)}
+  .scratch:focus{outline:none;border-color:var(--accent);border-style:solid}
+  .spacer{flex:1;min-height:14px}
+  .answer{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
+  .answer.rise{animation:rise .3s cubic-bezier(.2,.7,.3,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .a-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ok);margin-bottom:11px}
+  .eq{font-size:23px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 8px}
+  .eq .katex-display{margin:0}
+  .a-name{font-size:18px;font-weight:600}
+  .units,.note{margin-top:9px;font-family:var(--mono);font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;line-height:1.6}
+  .units b{color:var(--accent);font-weight:600}
+  .note b{color:var(--ink);font-weight:600}
+  .actions{margin-top:20px;display:flex;gap:11px}
+  .btn{flex:1;padding:14px;border-radius:11px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:filter .12s,transform .06s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn:active{transform:translateY(1px)}
+  .btn .k{font-family:var(--mono);font-size:10px;font-weight:600;opacity:.55;border:1px solid currentColor;border-radius:4px;padding:1px 5px}
+  .btn-reveal{background:var(--ink);color:var(--paper)}
+  .btn-reveal:hover{filter:brightness(1.2)}
+  .btn-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+  .btn-review{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)}
+  .hidden{display:none!important}
+  .foot{text-align:center;margin-top:14px;font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.03em}
+  .summary{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px}
+  .summary h2{margin:0 0 4px;font-size:19px;font-weight:600}
+  .summary .sub{color:var(--muted);font-size:13px;margin:0 0 20px}
+  .scorerow{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+  .score{flex:1;min-width:100px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:15px}
+  .score .v{font-size:26px;font-weight:700;font-family:var(--mono)}
+  .score .l{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .score.blue .v{color:var(--accent)} .score.amber .v{color:var(--warn)} .score.green .v{color:var(--ok)}
+  .misslist .mh{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  .missitem{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+  .missitem .mc{font-family:var(--mono);font-size:11px;color:var(--accent);flex:0 0 auto}
+  .missitem .mx{font-family:var(--mono);font-size:11px;color:var(--warn);margin-left:auto;flex:0 0 auto}
+  .sumbtns{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+  .go.alt{background:var(--panel);color:var(--accent);border:1px solid var(--accent)}
+  .go.alt:hover{background:var(--accent-soft);filter:none}
+  .go.ghost{background:none;color:var(--muted);border:1px solid var(--line)}
+  .go.ghost:hover{background:var(--panel);filter:none}
+  .colophon{text-align:center;margin-top:26px;font-family:var(--mono);font-size:10.5px;color:var(--faint);line-height:1.8}
+  @media (max-width:520px){.prompt{font-size:19px}.eq{font-size:20px}.actions{flex-direction:column}.card{padding:26px 20px}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="glyph" width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+      <path d="M21 6 C11 6 6 14 6 21 C6 28 11 36 21 36" stroke="#1F44D8" stroke-width="1.2" opacity=".35"/>
+      <path d="M21 10 C14 10 10 15 10 21 C10 27 14 32 21 32" stroke="#1F44D8" stroke-width="1.2" opacity=".55"/>
+      <path d="M21 6 C31 6 36 14 36 21 C36 28 31 36 21 36" stroke="#B5620F" stroke-width="1.2" opacity=".35"/>
+      <path d="M21 10 C28 10 32 15 32 21 C32 27 28 32 21 32" stroke="#B5620F" stroke-width="1.2" opacity=".55"/>
+      <circle cx="15" cy="21" r="5.4" fill="#1F44D8"/><path d="M13 21h4M15 19v4" stroke="#fff" stroke-width="1.3"/>
+      <circle cx="27" cy="21" r="5.4" fill="#B5620F"/><path d="M25 21h4" stroke="#fff" stroke-width="1.3"/>
+    </svg>
+    <div class="brand">
+      <h1>Field Recall</h1>
+      <p>HALLIDAY · RESNICK — E&amp;M, CH 21–27 · EQUATIONS, UNITS, GEOMETRY, INTEGRALS</p>
+    </div>
+  </header>
+
+  <section class="setup" id="setup">
+    <p class="eyebrow">Pick your scope</p>
+    <div class="chips" id="chips"></div>
+    <div class="selall"><button id="selAll">select all</button><button id="selNone">clear</button></div>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" id="optShuffle" checked><span>Shuffle order <span class="sub">— draw in random sequence</span></span></label>
+      <label class="opt"><input type="checkbox" id="optReverse"><span>Reverse mode <span class="sub">— show the expression, recall its name</span></span></label>
+      <label class="opt"><input type="checkbox" id="optScratch" checked><span>Scratch pad <span class="sub">— write it from memory before revealing</span></span></label>
+      <label class="opt"><input type="checkbox" id="optUnits" checked><span>Show units <span class="sub">— SI units appear with the answer</span></span></label>
+    </div>
+    <button class="go" id="start">Start session</button>
+    <div class="count-hint" id="countHint"></div>
+  </section>
+
+  <section id="study" class="hidden">
+    <div class="topbar">
+      <span class="stat"><b id="pDone">0</b> / <span id="pTot">0</span> mastered</span>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <span class="review-pill hidden" id="reviewPill">review 0</span>
+    </div>
+    <div class="card">
+      <span class="ct tl"></span><span class="ct tr"></span><span class="ct bl"></span><span class="ct br"></span>
+      <div class="chap" id="chap">—</div>
+      <div class="plabel" id="pLabel">Recall the expression for</div>
+      <div class="prompt" id="prompt">—</div>
+      <textarea class="scratch hidden" id="scratch" placeholder="write it from memory first…" spellcheck="false"></textarea>
+      <div class="spacer"></div>
+      <div class="answer hidden" id="answer">
+        <div class="a-label" id="aLabel">Answer</div>
+        <div class="eq" id="eq"></div>
+        <div class="a-name hidden" id="aName"></div>
+        <div class="units hidden" id="units"></div>
+        <div class="note hidden" id="note"></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-reveal" id="reveal">Reveal <span class="k">space</span></button>
+        <button class="btn btn-ok hidden" id="gotIt">Got it <span class="k">1</span></button>
+        <button class="btn btn-review hidden" id="review">Review again <span class="k">2</span></button>
+      </div>
+    </div>
+    <div class="foot">space reveals · 1 = got it · 2 = review again</div>
+  </section>
+
+  <section id="summary" class="summary hidden"></section>
+
+  <div class="colophon">Physical laws are facts, not copyrightable text · rendered for study<br>fork it, edit the deck, share the link</div>
+</div>
+
+<script>
+(function(){
+  var CH={21:"Coulomb's law",22:"Electric fields",23:"Gauss' law",24:"Electric potential",25:"Capacitance",26:"Current & resistance",27:"Circuits","G":"Geometry & integrals","T":"Traps & conventions"};
+  var BADGE={"G":"\u222b","T":"\u2691"};
+  var EQS=[
+    {ch:21,name:"Coulomb's law — magnitude of force between two point charges",tex:"F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{|q_1||q_2|}{r^2}",unit:"[F]=\\mathrm{N};\\ [q]=\\mathrm{C},\\ [r]=\\mathrm{m}",note:"k=\\dfrac{1}{4\\pi\\varepsilon_0}\\approx 8.99\\times10^{9}\\ \\mathrm{N\\!\\cdot\\! m^2/C^2}"},
+    {ch:21,name:"Coulomb's law in vector form (force on 1 due to 2)",tex:"\\vec F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1 q_2}{r^2}\\,\\hat r",unit:"[\\vec F]=\\mathrm{N}"},
+    {ch:21,name:"Net Coulomb force by superposition",tex:"\\vec F_{\\text{net}}=\\sum_i \\vec F_i",unit:"[F]=\\mathrm{N}",note:"\\text{vector sum of the individual pair forces}"},
+    {ch:21,name:"Coulomb constant k",tex:"k=\\dfrac{1}{4\\pi\\varepsilon_0}\\approx 8.99\\times10^{9}\\ \\mathrm{N\\!\\cdot\\! m^2/C^2}",unit:"[k]=\\mathrm{N\\!\\cdot\\! m^2/C^2}"},
+    {ch:21,name:"Permittivity of free space",tex:"\\varepsilon_0=8.85\\times10^{-12}\\ \\mathrm{C^2/(N\\!\\cdot\\! m^2)}",unit:"[\\varepsilon_0]=\\mathrm{C^2/(N\\!\\cdot\\! m^2)}=\\mathrm{F/m}"},
+    {ch:21,name:"Charge is quantized",tex:"q=n\\,e,\\quad n=0,\\pm1,\\pm2,\\dots",unit:"[q]=\\mathrm{C};\\ n\\ \\text{dimensionless}"},
+    {ch:21,name:"Elementary charge",tex:"e=1.60\\times10^{-19}\\ \\mathrm{C}",unit:"[e]=\\mathrm{C}"},
+
+    {ch:22,name:"Definition of the electric field",tex:"\\vec E=\\dfrac{\\vec F}{q_0}",unit:"[E]=\\mathrm{N/C}=\\mathrm{V/m}",note:"q_0 = \\text{positive test charge}"},
+    {ch:22,name:"Electric field of a point charge",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}",unit:"[E]=\\mathrm{N/C}"},
+    {ch:22,name:"Electric field from several charges (superposition)",tex:"\\vec E=\\sum_i \\vec E_i",unit:"[E]=\\mathrm{N/C}"},
+    {ch:22,name:"Electric dipole moment",tex:"\\vec p=q\\,\\vec d",unit:"[p]=\\mathrm{C\\!\\cdot\\! m}",note:"p=qd,\\ \\text{points from} -\\text{ to} +"},
+    {ch:22,name:"Electric field on the axis of a dipole (far field)",tex:"E=\\dfrac{1}{2\\pi\\varepsilon_0}\\dfrac{p}{z^3}",unit:"[E]=\\mathrm{N/C}",note:"\\text{for } z\\gg d"},
+    {ch:22,name:"Electric field on the central axis of a charged ring",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{qz}{\\left(z^2+R^2\\right)^{3/2}}",unit:"[E]=\\mathrm{N/C}"},
+    {ch:22,name:"Electric field on the central axis of a charged disk",tex:"E=\\dfrac{\\sigma}{2\\varepsilon_0}\\left(1-\\dfrac{z}{\\sqrt{z^2+R^2}}\\right)",unit:"[E]=\\mathrm{N/C};\\ [\\sigma]=\\mathrm{C/m^2}"},
+    {ch:22,name:"Acceleration of a charged particle in a uniform field",tex:"\\vec a=\\dfrac{q\\vec E}{m}",unit:"[a]=\\mathrm{m/s^2}",note:"\\text{constant } \\vec E \\Rightarrow \\text{projectile-like motion}"},
+    {ch:22,name:"Force on a point charge in an external field",tex:"\\vec F=q\\vec E",unit:"[F]=\\mathrm{N}"},
+    {ch:22,name:"Torque on a dipole in a uniform field",tex:"\\vec\\tau=\\vec p\\times\\vec E,\\qquad \\tau=pE\\sin\\theta",unit:"[\\tau]=\\mathrm{N\\!\\cdot\\! m}"},
+    {ch:22,name:"Potential energy of a dipole in a field",tex:"U=-\\vec p\\cdot\\vec E=-pE\\cos\\theta",unit:"[U]=\\mathrm{J}"},
+
+    {ch:23,name:"Electric flux through a closed surface",tex:"\\Phi=\\oint \\vec E\\cdot d\\vec A",unit:"[\\Phi]=\\mathrm{N\\!\\cdot\\! m^2/C}=\\mathrm{V\\!\\cdot\\! m}"},
+    {ch:23,name:"Flux through a flat area in a uniform field",tex:"\\Phi=\\vec E\\cdot\\vec A=EA\\cos\\theta",unit:"[\\Phi]=\\mathrm{N\\!\\cdot\\! m^2/C}"},
+    {ch:23,name:"Gauss' law",tex:"\\varepsilon_0\\oint \\vec E\\cdot d\\vec A=q_{\\text{enc}}",unit:"[q_{\\text{enc}}]=\\mathrm{C}",note:"\\text{equivalently } \\Phi=q_{\\text{enc}}/\\varepsilon_0"},
+    {ch:23,name:"Field just outside a charged conductor",tex:"E=\\dfrac{\\sigma}{\\varepsilon_0}",unit:"[E]=\\mathrm{N/C};\\ [\\sigma]=\\mathrm{C/m^2}"},
+    {ch:23,name:"Field of an infinite line of charge",tex:"E=\\dfrac{\\lambda}{2\\pi\\varepsilon_0\\, r}",unit:"[E]=\\mathrm{N/C};\\ [\\lambda]=\\mathrm{C/m}",note:"\\lambda=\\text{linear charge density}"},
+    {ch:23,name:"Field of an infinite nonconducting sheet of charge",tex:"E=\\dfrac{\\sigma}{2\\varepsilon_0}",unit:"[E]=\\mathrm{N/C};\\ [\\sigma]=\\mathrm{C/m^2}"},
+    {ch:23,name:"Field outside a spherical shell / uniform sphere",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}",unit:"[E]=\\mathrm{N/C}",note:"r\\ge R\\ \\text{— like a point charge at center}"},
+    {ch:23,name:"Field inside a uniform sphere of charge",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{R^3}\\,r",unit:"[E]=\\mathrm{N/C}",note:"r\\le R"},
+    {ch:23,name:"Field inside a conductor (or hollow shell)",tex:"E=0",unit:"[E]=\\mathrm{N/C}",note:"\\text{electrostatic equilibrium}"},
+
+    {ch:24,name:"Definition of electric potential",tex:"V=\\dfrac{U}{q_0}",unit:"[V]=\\mathrm{V}=\\mathrm{J/C}"},
+    {ch:24,name:"Potential difference from the field",tex:"V_f-V_i=-\\int_i^f \\vec E\\cdot d\\vec s",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential from the field (V=0 at infinity)",tex:"V=-\\int_\\infty^f \\vec E\\cdot d\\vec s",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Work by the electric force vs. potential energy",tex:"\\Delta U=-W",unit:"[U]=[W]=\\mathrm{J}"},
+    {ch:24,name:"Work by an applied force moving charge q",tex:"W_{\\text{app}}=q\\,\\Delta V",unit:"[W]=\\mathrm{J}"},
+    {ch:24,name:"Potential due to a point charge",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential due to a group of point charges",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\sum_i\\dfrac{q_i}{r_i}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential due to a continuous charge distribution",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\int\\dfrac{dq}{r}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential due to an electric dipole (far field)",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{p\\cos\\theta}{r^2}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Field component from the potential",tex:"E_s=-\\dfrac{\\partial V}{\\partial s}",unit:"[E]=\\mathrm{V/m}=\\mathrm{N/C}",note:"\\text{vector form } \\vec E=-\\nabla V"},
+    {ch:24,name:"Potential energy of a two-charge system",tex:"U=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1 q_2}{r}",unit:"[U]=\\mathrm{J}"},
+    {ch:24,name:"Potential energy of a system of point charges",tex:"U=\\dfrac{1}{4\\pi\\varepsilon_0}\\sum_{i<j}\\dfrac{q_i q_j}{r_{ij}}",unit:"[U]=\\mathrm{J}",note:"\\text{one term per distinct pair}"},
+    {ch:24,name:"The electron-volt (energy unit)",tex:"1\\ \\mathrm{eV}=1.60\\times10^{-19}\\ \\mathrm{J}",unit:"[\\text{energy}]=\\mathrm{J}",note:"\\text{KE gained by charge } e \\text{ across } 1\\ \\mathrm{V}"},
+
+    {ch:25,name:"Definition of capacitance",tex:"q=CV",unit:"[q]=\\mathrm{C};\\ [C]=\\mathrm{F}"},
+    {ch:25,name:"Parallel-plate capacitor",tex:"C=\\dfrac{\\varepsilon_0 A}{d}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Field between the plates of a parallel-plate capacitor",tex:"E=\\dfrac{\\sigma}{\\varepsilon_0}=\\dfrac{q}{\\varepsilon_0 A}",unit:"[E]=\\mathrm{N/C}",note:"\\text{twice a lone sheet's } \\sigma/2\\varepsilon_0"},
+    {ch:25,name:"Cylindrical capacitor",tex:"C=2\\pi\\varepsilon_0\\dfrac{L}{\\ln(b/a)}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Spherical capacitor",tex:"C=4\\pi\\varepsilon_0\\dfrac{ab}{b-a}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Isolated conducting sphere",tex:"C=4\\pi\\varepsilon_0 R",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Capacitors in parallel",tex:"C_{\\text{eq}}=\\sum_j C_j",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Capacitors in series",tex:"\\dfrac{1}{C_{\\text{eq}}}=\\sum_j\\dfrac{1}{C_j}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Energy stored in a capacitor",tex:"U=\\dfrac{q^2}{2C}=\\tfrac12 CV^2",unit:"[U]=\\mathrm{J}"},
+    {ch:25,name:"Energy density of an electric field",tex:"u=\\tfrac12\\varepsilon_0 E^2",unit:"[u]=\\mathrm{J/m^3}"},
+    {ch:25,name:"Capacitance with a dielectric",tex:"C=\\kappa\\, C_{\\text{air}}=\\dfrac{\\kappa\\varepsilon_0 A}{d}",unit:"[C]=\\mathrm{F};\\ \\kappa\\ \\text{dimensionless}",note:"\\kappa=\\text{dielectric constant}"},
+    {ch:25,name:"Gauss' law with a dielectric",tex:"\\varepsilon_0\\oint \\kappa\\vec E\\cdot d\\vec A=q_{\\text{free}}",unit:"[q_{\\text{free}}]=\\mathrm{C}"},
+
+    {ch:26,name:"Electric current",tex:"i=\\dfrac{dq}{dt}",unit:"[i]=\\mathrm{A}=\\mathrm{C/s}"},
+    {ch:26,name:"Current from current density",tex:"i=\\int \\vec J\\cdot d\\vec A",unit:"[i]=\\mathrm{A}"},
+    {ch:26,name:"Current density for uniform current",tex:"J=\\dfrac{i}{A}",unit:"[J]=\\mathrm{A/m^2}"},
+    {ch:26,name:"Current density and drift speed",tex:"\\vec J=(ne)\\,\\vec v_d",unit:"[J]=\\mathrm{A/m^2};\\ [v_d]=\\mathrm{m/s}",note:"n=\\text{carriers per unit volume}"},
+    {ch:26,name:"Definition of resistance",tex:"R=\\dfrac{V}{i}",unit:"[R]=\\Omega=\\mathrm{V/A}"},
+    {ch:26,name:"Resistivity (definition)",tex:"\\rho=\\dfrac{E}{J}",unit:"[\\rho]=\\Omega\\!\\cdot\\!\\mathrm{m}",note:"\\text{vector form } \\vec E=\\rho\\vec J"},
+    {ch:26,name:"Resistance of a uniform conductor",tex:"R=\\rho\\,\\dfrac{L}{A}",unit:"[R]=\\Omega"},
+    {ch:26,name:"Conductivity",tex:"\\sigma=\\dfrac{1}{\\rho}",unit:"[\\sigma]=(\\Omega\\!\\cdot\\!\\mathrm{m})^{-1}=\\mathrm{S/m}"},
+    {ch:26,name:"Resistivity vs. temperature",tex:"\\rho-\\rho_0=\\rho_0\\,\\alpha\\,(T-T_0)",unit:"[\\alpha]=\\mathrm{K^{-1}}\\ (\\text{per }^\\circ\\mathrm{C})"},
+    {ch:26,name:"Rate of electrical energy transfer (power)",tex:"P=iV",unit:"[P]=\\mathrm{W}"},
+    {ch:26,name:"Power dissipated in a resistor",tex:"P=i^2 R=\\dfrac{V^2}{R}",unit:"[P]=\\mathrm{W}"},
+
+    {ch:27,name:"Definition of emf",tex:"\\mathscr{E}=\\dfrac{dW}{dq}",unit:"[\\mathscr{E}]=\\mathrm{V}=\\mathrm{J/C}"},
+    {ch:27,name:"Current in a single-loop circuit",tex:"i=\\dfrac{\\mathscr{E}}{R+r}",unit:"[i]=\\mathrm{A}",note:"r=\\text{internal resistance}"},
+    {ch:27,name:"Terminal potential difference of a real battery",tex:"V=\\mathscr{E}-i\\,r",unit:"[V]=\\mathrm{V}"},
+    {ch:27,name:"Resistors in series",tex:"R_{\\text{eq}}=\\sum_j R_j",unit:"[R]=\\Omega"},
+    {ch:27,name:"Resistors in parallel",tex:"\\dfrac{1}{R_{\\text{eq}}}=\\sum_j\\dfrac{1}{R_j}",unit:"[R]=\\Omega"},
+    {ch:27,name:"Power of an emf device",tex:"P=i\\,\\mathscr{E}",unit:"[P]=\\mathrm{W}"},
+    {ch:27,name:"Kirchhoff's junction (current) rule",tex:"\\sum i_{\\text{in}}=\\sum i_{\\text{out}}",unit:"[i]=\\mathrm{A}"},
+    {ch:27,name:"Kirchhoff's loop (voltage) rule",tex:"\\sum_{\\text{loop}}\\Delta V=0",unit:"[V]=\\mathrm{V}"},
+    {ch:27,name:"Charging a capacitor — charge",tex:"q=C\\mathscr{E}\\left(1-e^{-t/RC}\\right)",unit:"[q]=\\mathrm{C};\\ [RC]=\\mathrm{s}"},
+    {ch:27,name:"Charging current in an RC circuit",tex:"i=\\dfrac{\\mathscr{E}}{R}\\,e^{-t/RC}",unit:"[i]=\\mathrm{A}"},
+    {ch:27,name:"Voltage across a charging capacitor",tex:"V_C=\\mathscr{E}\\left(1-e^{-t/RC}\\right)",unit:"[V]=\\mathrm{V}"},
+    {ch:27,name:"Discharging a capacitor — charge",tex:"q=q_0\\,e^{-t/RC}",unit:"[q]=\\mathrm{C}"},
+    {ch:27,name:"Discharging current in an RC circuit",tex:"i=\\dfrac{q_0}{RC}\\,e^{-t/RC}",unit:"[i]=\\mathrm{A}"},
+    {ch:27,name:"Capacitive time constant",tex:"\\tau=RC",unit:"[\\tau]=\\mathrm{s};\\ [R]=\\Omega,\\ [C]=\\mathrm{F}"},
+    {ch:27,name:"RC decay landmarks — one time constant and the half-life",tex:"q(\\tau)=q_0 e^{-1}\\approx 0.37\\,q_0,\\quad t_{1/2}=RC\\ln 2",unit:"[t]=\\mathrm{s}",note:"\\text{after one } \\tau \\text{, about } 37\\% \\text{ remains}"},
+
+    {ch:"G",name:"Circumference of a circle (radius r)",tex:"2\\pi r",unit:"\\mathrm{m}"},
+    {ch:"G",name:"Area of a circle / disk (radius r)",tex:"\\pi r^2",unit:"\\mathrm{m^2}"},
+    {ch:"G",name:"Surface area of a sphere (radius r)",tex:"4\\pi r^2",unit:"\\mathrm{m^2}",note:"\\text{Gaussian sphere; the } 4\\pi \\text{ cancels Coulomb's } 1/4\\pi"},
+    {ch:"G",name:"Volume of a sphere (radius r)",tex:"\\tfrac{4}{3}\\pi r^3",unit:"\\mathrm{m^3}",note:"\\text{for a uniform volume charge}"},
+    {ch:"G",name:"Lateral surface area of a cylinder (radius r, length L)",tex:"2\\pi r L",unit:"\\mathrm{m^2}",note:"\\text{side of a Gaussian cylinder}"},
+    {ch:"G",name:"Total solid angle around a closed surface",tex:"\\oint d\\Omega = 4\\pi",unit:"\\text{steradians (dimensionless)}",note:"\\text{why } \\Phi = q_{\\text{enc}}/\\varepsilon_0"},
+    {ch:"G",name:"Total charge from a linear charge density",tex:"q=\\int \\lambda\\, dl",unit:"[q]=\\mathrm{C};\\ [\\lambda]=\\mathrm{C/m}",note:"\\lambda = dq/dl"},
+    {ch:"G",name:"Total charge from a surface charge density",tex:"q=\\int \\sigma\\, dA",unit:"[q]=\\mathrm{C};\\ [\\sigma]=\\mathrm{C/m^2}",note:"\\sigma = dq/dA"},
+    {ch:"G",name:"Total charge from a volume charge density",tex:"q=\\int \\rho\\, dV",unit:"[q]=\\mathrm{C};\\ [\\rho]=\\mathrm{C/m^3}",note:"\\rho = dq/dV \\ \\text{(charge density, not resistivity)}"},
+    {ch:"G",name:"Electric field of a continuous charge distribution",tex:"\\vec E=\\dfrac{1}{4\\pi\\varepsilon_0}\\int \\dfrac{\\hat r}{r^2}\\,dq",unit:"[E]=\\mathrm{N/C}",note:"\\hat r \\text{ points from } dq \\text{ to the field point}"},
+    {ch:"G",name:"Electrostatic field is conservative (closed-loop line integral)",tex:"\\oint \\vec E\\cdot d\\vec s = 0",unit:"\\text{line integral of } \\vec E \\text{ in } \\mathrm{V}",note:"\\text{this is what lets } V \\text{ be defined}"},
+
+    {ch:"T",name:"Shell theorem — a uniform shell of charge seen from outside",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}\\quad(r>R)",unit:"[E]=\\mathrm{N/C}",note:"\\text{acts like a point charge at the center}"},
+    {ch:"T",name:"Shell theorem — a uniform shell of charge seen from inside",tex:"E=0\\quad(r<R)",unit:"[E]=\\mathrm{N/C}",note:"\\text{a solid ball instead gives } E\\propto r"},
+    {ch:"T",name:"Potential and field of a conductor in electrostatic equilibrium",tex:"E_{\\text{in}}=0,\\quad V=\\text{const throughout}",note:"V_{\\text{out}}=\\tfrac{1}{4\\pi\\varepsilon_0}q/r;\\ \\text{inside}=\\text{surface value}"},
+    {ch:"T",name:"How a capacitor behaves at the start and end of RC charging",tex:"t=0:\\ \\text{wire (short)};\\quad t\\to\\infty:\\ \\text{break (open)}",note:"\\text{uncharged passes current; charged blocks it}"},
+    {ch:"T",name:"Kirchhoff sign rules for traversing a loop",tex:"\\text{resistor along } i:\\ -iR;\\quad \\text{emf } -\\!\\to\\!+:\\ +\\mathscr{E}",note:"\\text{flip the sign if you traverse the other way}"},
+    {ch:"T",name:"What Ohm's law really is",tex:"\\vec E=\\rho\\vec J",unit:"[\\rho]=\\Omega\\!\\cdot\\!\\mathrm{m}",note:"V=iR\\ \\text{holds only for ohmic devices}"}
+  ];
+  EQS.forEach(function(e,i){e.id=i;});
+  var $=function(id){return document.getElementById(id);};
+  function kr(tex,elm,disp){ try{katex.render(tex,elm,{displayMode:!!disp,throwOnError:false});}catch(_){elm.textContent=tex;} }
+  function chapLabel(ch){ return isNaN(+ch)?CH[ch]:('Ch '+ch+' · '+CH[ch]); }
+  function chapTag(ch){ return isNaN(+ch)?(BADGE[ch]||'•'):('Ch'+ch); }
+
+  var sel={21:1,22:1,23:1,24:1,25:1,26:1,27:1,"G":1,"T":1};
+  var S={shuffle:true,reverse:false,scratch:true,units:true,queue:[],mastered:{},missed:{},reviewCount:{},total:0,cur:null,mCount:0};
+
+  var counts={}; EQS.forEach(function(e){counts[e.ch]=(counts[e.ch]||0)+1;});
+  var chipsBox=$('chips');
+  Object.keys(CH).forEach(function(ch){
+    var badge=isNaN(+ch)?(BADGE[ch]||'•'):ch;
+    var b=document.createElement('button');
+    b.className='chip'; b.setAttribute('data-on','1'); b.setAttribute('data-ch',ch);
+    b.innerHTML='<span class="n">'+badge+'</span><span>'+CH[ch]+'</span><span class="c">'+counts[ch]+'</span>';
+    b.onclick=function(){var on=b.getAttribute('data-on')==='1';b.setAttribute('data-on',on?'0':'1');sel[ch]=on?0:1;hint();};
+    chipsBox.appendChild(b);
+  });
+  function setAll(v){document.querySelectorAll('.chip').forEach(function(b){b.setAttribute('data-on',v?'1':'0');sel[b.getAttribute('data-ch')]=v?1:0;});hint();}
+  $('selAll').onclick=function(){setAll(true);};
+  $('selNone').onclick=function(){setAll(false);};
+  function selEqs(){return EQS.filter(function(e){return sel[e.ch];});}
+  function hint(){var n=selEqs().length;$('countHint').textContent=n?(n+' card'+(n>1?'s':'')+' in this deck'):'select at least one section';$('start').disabled=n===0;}
+  $('optShuffle').onchange=function(e){S.shuffle=e.target.checked;};
+  $('optReverse').onchange=function(e){S.reverse=e.target.checked;};
+  $('optScratch').onchange=function(e){S.scratch=e.target.checked;};
+  $('optUnits').onchange=function(e){S.units=e.target.checked;};
+  hint();
+
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+  function start(ids){
+    var list=ids||selEqs().map(function(e){return e.id;});
+    S.queue=S.shuffle?shuffle(list):list.slice();
+    S.mastered={};S.missed={};S.reviewCount={};S.total=list.length;S.mCount=0;
+    $('setup').classList.add('hidden');$('summary').classList.add('hidden');$('study').classList.remove('hidden');
+    $('pTot').textContent=S.total;
+    next();
+  }
+  $('start').onclick=function(){start(null);};
+
+  function next(){
+    if(S.queue.length===0){return summary();}
+    S.cur=EQS[S.queue[0]];var e=S.cur;
+    $('answer').classList.add('hidden');$('answer').classList.remove('rise');
+    $('reveal').classList.remove('hidden');
+    $('gotIt').classList.add('hidden');$('review').classList.add('hidden');
+    $('aName').classList.add('hidden');
+    $('units').classList.add('hidden');$('units').innerHTML='';
+    $('note').classList.add('hidden');$('note').innerHTML='';$('eq').innerHTML='';
+    $('scratch').value='';$('scratch').classList.toggle('hidden',!S.scratch);
+    $('chap').textContent=chapLabel(e.ch);
+    if(S.reverse){
+      $('pLabel').textContent='Name it';
+      $('prompt').innerHTML='<span class="rev-eq"></span>';kr(e.tex,$('prompt').firstChild,false);
+    }else{
+      $('pLabel').textContent='Recall the expression for';
+      $('prompt').textContent=e.name;
+    }
+    progress();
+  }
+  function reveal(){
+    var e=S.cur;
+    if(S.reverse){
+      $('aLabel').textContent='Expression for';
+      $('aName').textContent=e.name;$('aName').classList.remove('hidden');
+      kr(e.tex,$('eq'),true);
+    }else{
+      $('aLabel').textContent='Answer';
+      kr(e.tex,$('eq'),true);
+    }
+    if(S.units&&e.unit){
+      $('units').classList.remove('hidden');
+      var ub=document.createElement('b');ub.textContent='units';$('units').appendChild(ub);
+      var us=document.createElement('span');kr(e.unit,us,false);$('units').appendChild(us);
+    }
+    if(e.note){
+      $('note').classList.remove('hidden');
+      var nb=document.createElement('b');nb.textContent='note';$('note').appendChild(nb);
+      var ns=document.createElement('span');kr(e.note,ns,false);$('note').appendChild(ns);
+    }
+    $('answer').classList.remove('hidden');$('answer').classList.add('rise');
+    $('reveal').classList.add('hidden');
+    $('gotIt').classList.remove('hidden');$('review').classList.remove('hidden');
+  }
+  $('reveal').onclick=reveal;
+  function grade(ok){
+    var id=S.queue.shift();
+    if(ok){if(!S.mastered[id]){S.mastered[id]=1;S.mCount++;}}
+    else{S.missed[id]=1;S.reviewCount[id]=(S.reviewCount[id]||0)+1;var pos=Math.min(S.queue.length,3+Math.floor(Math.random()*3));S.queue.splice(pos,0,id);}
+    next();
+  }
+  $('gotIt').onclick=function(){grade(true);};
+  $('review').onclick=function(){grade(false);};
+  function progress(){
+    $('pDone').textContent=S.mCount;
+    $('fill').style.width=S.total?(S.mCount/S.total*100)+'%':'0%';
+    var reviewing=S.queue.filter(function(id){return S.reviewCount[id];}).length;
+    var p=$('reviewPill');
+    if(reviewing>0){p.classList.remove('hidden');p.textContent='review '+reviewing;}else{p.classList.add('hidden');}
+  }
+  function summary(){
+    $('study').classList.add('hidden');var sum=$('summary');sum.classList.remove('hidden');
+    var missArr=Object.keys(S.missed).map(Number).sort(function(a,b){return (S.reviewCount[b]||0)-(S.reviewCount[a]||0);});
+    var missCount=missArr.length;var clean=S.total-missCount;var pct=S.total?Math.round(clean/S.total*100):0;
+    var chapN=Object.keys(sel).filter(function(k){return sel[k];}).length;
+    var html='<h2>Session complete</h2>';
+    html+='<p class="sub">'+S.total+' card'+(S.total>1?'s':'')+' across '+chapN+' section'+(chapN>1?'s':'')+'.</p>';
+    html+='<div class="scorerow">';
+    html+='<div class="score green"><div class="v">'+pct+'%</div><div class="l">first-try</div></div>';
+    html+='<div class="score blue"><div class="v">'+clean+'</div><div class="l">clean</div></div>';
+    html+='<div class="score amber"><div class="v">'+missCount+'</div><div class="l">reviewed</div></div></div>';
+    if(missCount){
+      html+='<div class="misslist"><div class="mh">Needed a second look</div>';
+      missArr.forEach(function(id){var e=EQS[id];html+='<div class="missitem"><span class="mc">'+chapTag(e.ch)+'</span><span>'+e.name+'</span><span class="mx">'+(S.reviewCount[id]||1)+'×</span></div>';});
+      html+='</div>';
+    }else{
+      html+='<div class="misslist"><div class="mh">Clean run</div><div class="missitem" style="border:none;color:var(--ok)">Everything on the first try.</div></div>';
+    }
+    html+='<div class="sumbtns">';
+    if(missCount)html+='<button class="go" id="drill">Drill the '+missCount+' you missed</button>';
+    html+='<button class="go alt" id="again">Run the full deck again</button>';
+    html+='<button class="go ghost" id="reconfig">Change sections</button></div>';
+    sum.innerHTML=html;
+    if(missCount)$('drill').onclick=function(){start(missArr);};
+    $('again').onclick=function(){start(selEqs().map(function(e){return e.id;}));};
+    $('reconfig').onclick=function(){sum.classList.add('hidden');$('setup').classList.remove('hidden');};
+  }
+
+  document.addEventListener('keydown',function(e){
+    if($('study').classList.contains('hidden'))return;
+    if(document.activeElement&&document.activeElement.tagName==='TEXTAREA'){
+      if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();if(!$('reveal').classList.contains('hidden'))reveal();}
+      return;
+    }
+    if((e.key===' '||e.key==='Enter')&&!$('reveal').classList.contains('hidden')){e.preventDefault();reveal();}
+    else if(e.key==='1'&&!$('gotIt').classList.contains('hidden')){grade(true);}
+    else if(e.key==='2'&&!$('review').classList.contains('hidden')){grade(false);}
+  });
+})();
+</script>
+</body>
+</html>
