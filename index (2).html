@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Recall — E&amp;M, Ch 21–27 (Halliday &amp; Resnick)</title>
+<meta name="description" content="Flashcards, equation-building, and a units quiz for the electromagnetism block: Halliday &amp; Resnick chapters 21–27.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+  :root{
+    --paper:#E7EAF0; --grid:rgba(31,68,216,.05); --panel:#FBFCFE; --track:#DAE0E9;
+    --ink:#12161F; --muted:#5A6472; --faint:#8A93A2; --line:#D6DCE5; --line-strong:#C3CBD8;
+    --accent:#1F44D8; --accent-soft:#E7ECFB; --accent-ink:#173097;
+    --ok:#0F7B5A; --ok-soft:#E1F2EB; --ok-line:#BFE3D5;
+    --warn:#B5620F; --warn-soft:#F6ECDA; --warn-line:#E8D3B0;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; --r:11px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --paper:#0E1014; --grid:rgba(120,150,255,.05); --panel:#1B1F26; --track:#262B34;
+    --ink:#EAECEF; --muted:#A4ADBB; --faint:#727B89; --line:#2A2F38; --line-strong:#3A4049;
+    --accent:#6E86F0; --accent-soft:#1E2A55; --accent-ink:#B8C6FB;
+    --ok:#4FD0A3; --ok-soft:#12332A; --ok-line:#1E4A3C;
+    --warn:#E4A24E; --warn-soft:#382913; --warn-line:#5A431F;
+  }}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;min-height:100vh;padding:24px 16px 64px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .glyph{flex:0 0 auto}
+  .brand h1{font-size:16px;letter-spacing:.02em;margin:0;font-weight:600}
+  .brand p{margin:2px 0 0;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em}
+  .setup{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+  .segbar{display:flex;gap:5px;background:var(--track);padding:4px;border-radius:11px;margin:0 0 18px}
+  .seg{flex:1;border:none;background:none;font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--muted);padding:9px 6px;border-radius:8px;cursor:pointer}
+  .seg.on{background:var(--panel);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+  .chip{font-family:var(--mono);font-size:12.5px;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:8px 11px;border-radius:9px;cursor:pointer;user-select:none;display:flex;gap:8px;align-items:center;transition:border-color .12s,background .12s}
+  .chip .n{font-weight:600;color:var(--ink)} .chip .c{font-size:10px;color:var(--faint)}
+  .chip[data-on="1"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .chip[data-on="1"] .n,.chip[data-on="1"] .c{color:var(--accent-ink)}
+  .chip:hover{border-color:var(--line-strong)}
+  .selall{display:flex;gap:14px;margin:12px 0 6px;font-family:var(--mono);font-size:11px}
+  .selall button{background:none;border:none;color:var(--accent);cursor:pointer;padding:0;font-family:inherit;font-size:inherit;letter-spacing:.04em}
+  .selall button:hover{text-decoration:underline}
+  .diffbar{display:flex;gap:8px;align-items:center;margin:14px 0 2px;flex-wrap:wrap}
+  .diffbar .dl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-right:2px}
+  .diff-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);font-family:var(--mono);font-size:12px;padding:6px 13px;border-radius:8px;cursor:pointer}
+  .diff-btn.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .unitsNote{font-size:13.5px;color:var(--muted);margin:2px 0 4px;line-height:1.6}
+  .opts{display:flex;flex-direction:column;gap:11px;margin:18px 0 20px;padding-top:16px;border-top:1px solid var(--line)}
+  .opt{display:flex;align-items:center;gap:11px;font-size:13.5px;cursor:pointer}
+  .opt input{appearance:none;-webkit-appearance:none;width:38px;height:22px;border-radius:11px;background:var(--track);position:relative;cursor:pointer;flex:0 0 auto;transition:background .15s}
+  .opt input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .opt input:checked{background:var(--accent)} .opt input:checked::after{transform:translateX(16px)}
+  .opt .sub{color:var(--muted);font-size:12px}
+  .go{width:100%;padding:15px;border:none;border-radius:11px;background:var(--accent);color:#fff;font-family:var(--sans);font-size:14.5px;font-weight:600;cursor:pointer;transition:filter .12s,transform .06s}
+  .go:hover{filter:brightness(1.06)} .go:active{transform:translateY(1px)} .go:disabled{opacity:.5;cursor:not-allowed}
+  .count-hint{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+  .navrow{display:flex;margin-bottom:10px}
+  .homebtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer}
+  .homebtn:hover{border-color:var(--line-strong);color:var(--ink)}
+  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .stat{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap} .stat b{color:var(--ink)}
+  .track{flex:1;height:6px;background:var(--track);border-radius:3px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+  .review-pill{font-family:var(--mono);font-size:11px;color:var(--warn);background:var(--warn-soft);padding:3px 9px;border-radius:20px}
+  .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:30px 26px;min-height:300px;display:flex;flex-direction:column}
+  .ct{position:absolute;width:13px;height:13px}
+  .ct.tl{top:11px;left:11px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
+  .ct.tr{top:11px;right:11px;border-top:2px solid var(--accent);border-right:2px solid var(--accent)}
+  .ct.bl{bottom:11px;left:11px;border-bottom:2px solid var(--accent);border-left:2px solid var(--accent)}
+  .ct.br{bottom:11px;right:11px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent)}
+  .chap{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+  .plabel{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+  .prompt{font-size:21px;font-weight:600;line-height:1.34;margin:0;max-width:48ch}
+  .prompt .rev-eq{font-weight:400}
+  .scratch{width:100%;min-height:70px;margin-top:18px;resize:vertical;border:1px dashed var(--line-strong);border-radius:10px;padding:11px 13px;font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--paper);line-height:1.6}
+  .scratch::placeholder{color:var(--faint)} .scratch:focus{outline:none;border-color:var(--accent);border-style:solid}
+  .spacer{flex:1;min-height:14px}
+  .answer{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
+  .answer.rise{animation:rise .3s cubic-bezier(.2,.7,.3,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .a-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ok);margin-bottom:11px}
+  .eq{font-size:23px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 8px} .eq .katex-display{margin:0}
+  .a-name{font-size:18px;font-weight:600}
+  .units,.note{margin-top:9px;font-family:var(--mono);font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;line-height:1.6}
+  .units b{color:var(--accent);font-weight:600} .note b{color:var(--ink);font-weight:600}
+  .actions{margin-top:20px;display:flex;gap:11px}
+  .btn{flex:1;padding:14px;border-radius:11px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:filter .12s,transform .06s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn:active{transform:translateY(1px)}
+  .btn .k{font-family:var(--mono);font-size:10px;font-weight:600;opacity:.55;border:1px solid currentColor;border-radius:4px;padding:1px 5px}
+  .btn-reveal{background:var(--ink);color:var(--paper)} .btn-reveal:hover{filter:brightness(1.2)}
+  .btn-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-line)}
+  .btn-review{background:var(--warn-soft);color:var(--warn);border-color:var(--warn-line)}
+  .hidden{display:none!important}
+  .foot{text-align:center;margin-top:14px;font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.03em}
+  /* build */
+  .bprompt{font-size:17px;font-weight:600;line-height:1.3;margin:0 0 14px}
+  .exprline{display:flex;align-items:flex-start;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:56px}
+  .lhs{font-size:20px;color:var(--accent);flex:0 0 auto;padding-top:3px}
+  .expr{display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex:1;min-height:30px}
+  .expr-empty{color:var(--faint);font-style:italic;font-size:13px}
+  .chiptok{font-family:var(--mono);font-size:16px;background:var(--panel);border:1px solid var(--line-strong);border-radius:6px;padding:3px 8px;color:var(--ink)}
+  .editrow{display:flex;gap:8px;margin:10px 0 2px;justify-content:flex-end}
+  .mini-btn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:7px;padding:5px 11px;cursor:pointer}
+  .mini-btn:hover{border-color:var(--line-strong);color:var(--ink)}
+  .palette{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .ptile{font-family:var(--mono);font-size:16px;min-width:40px;padding:9px 12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;cursor:pointer;transition:transform .05s,border-color .12s}
+  .ptile:hover{border-color:var(--accent)} .ptile:active{transform:translateY(1px)}
+  .bfeedback{margin-top:16px;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:500}
+  .bfeedback.good{background:var(--ok-soft);color:var(--ok);border:1px solid var(--ok-line)}
+  .bfeedback.bad{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn-line)}
+  .bfeedback.info{background:var(--accent-soft);color:var(--accent-ink);border:1px solid var(--line)}
+  .bfeedback .rev{margin-top:8px;font-size:20px;color:var(--ink)} .bfeedback .rev .katex-display{margin:0}
+  /* units MC */
+  .qtext{font-size:20px;font-weight:600;margin:2px 0 18px;line-height:1.35}
+  .qkind{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  .mc{display:flex;flex-direction:column;gap:10px}
+  .mcopt{text-align:left;font-size:17px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .12s;display:flex;align-items:center;gap:10px}
+  .mcopt:hover{border-color:var(--accent)}
+  .mcopt .mck{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:4px;padding:1px 6px;flex:0 0 auto}
+  .mcopt.correct{border-color:var(--ok-line);background:var(--ok-soft)} .mcopt.correct .mck{color:var(--ok)}
+  .mcopt.wrong{border-color:var(--warn-line);background:var(--warn-soft)} .mcopt.wrong .mck{color:var(--warn)}
+  .mcopt.dim{opacity:.5}
+  /* summary */
+  .summary{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px}
+  .summary h2{margin:0 0 4px;font-size:19px;font-weight:600}
+  .summary .sub{color:var(--muted);font-size:13px;margin:0 0 20px}
+  .scorerow{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+  .score{flex:1;min-width:100px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:15px}
+  .score .v{font-size:26px;font-weight:700;font-family:var(--mono)} .score .l{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .score.blue .v{color:var(--accent)} .score.amber .v{color:var(--warn)} .score.green .v{color:var(--ok)}
+  .misslist .mh{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  .missitem{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+  .missitem .mc2{font-family:var(--mono);font-size:11px;color:var(--accent);flex:0 0 auto}
+  .missitem .mx{font-family:var(--mono);font-size:11px;color:var(--warn);margin-left:auto;flex:0 0 auto}
+  .sumbtns{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+  .go.alt{background:var(--panel);color:var(--accent);border:1px solid var(--accent)} .go.alt:hover{background:var(--accent-soft);filter:none}
+  .go.ghost{background:none;color:var(--muted);border:1px solid var(--line)} .go.ghost:hover{background:var(--panel);filter:none}
+  .colophon{text-align:center;margin-top:26px;font-family:var(--mono);font-size:10.5px;color:var(--faint);line-height:1.8}
+  @media (max-width:520px){.prompt{font-size:19px}.eq{font-size:20px}.actions{flex-direction:column}.card{padding:26px 20px}.qtext{font-size:18px}}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="glyph" width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+      <path d="M21 6 C11 6 6 14 6 21 C6 28 11 36 21 36" stroke="#1F44D8" stroke-width="1.2" opacity=".35"/>
+      <path d="M21 10 C14 10 10 15 10 21 C10 27 14 32 21 32" stroke="#1F44D8" stroke-width="1.2" opacity=".55"/>
+      <path d="M21 6 C31 6 36 14 36 21 C36 28 31 36 21 36" stroke="#B5620F" stroke-width="1.2" opacity=".35"/>
+      <path d="M21 10 C28 10 32 15 32 21 C32 27 28 32 21 32" stroke="#B5620F" stroke-width="1.2" opacity=".55"/>
+      <circle cx="15" cy="21" r="5.4" fill="#1F44D8"/><path d="M13 21h4M15 19v4" stroke="#fff" stroke-width="1.3"/>
+      <circle cx="27" cy="21" r="5.4" fill="#B5620F"/><path d="M25 21h4" stroke="#fff" stroke-width="1.3"/>
+    </svg>
+    <div class="brand"><h1>Field Recall</h1><p>HALLIDAY · RESNICK — E&amp;M, CH 21–27</p></div>
+  </header>
+
+  <section class="setup" id="setup">
+    <div class="segbar" id="segbar">
+      <button class="seg on" data-mode="flash">Flashcards</button>
+      <button class="seg" data-mode="build">Build</button>
+      <button class="seg" data-mode="units">Units</button>
+    </div>
+    <div class="unitsNote hidden" id="unitsNote">Multiple-choice quiz on the SI units of each quantity and on unit conversions (prefixes, eV, and unit identities like <span id="un1"></span>).</div>
+    <p class="eyebrow" id="scopeLbl">Pick your scope</p>
+    <div class="chips" id="chips"></div>
+    <div class="selall" id="selallRow"><button id="selAll">select all</button><button id="selNone">clear</button></div>
+    <div class="diffbar hidden" id="diffbar">
+      <span class="dl">Difficulty</span>
+      <button class="diff-btn on" data-diff="all">All</button>
+      <button class="diff-btn" data-diff="core">Core</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+    <div class="opts" id="optsBlock">
+      <label class="opt"><input type="checkbox" id="optShuffle" checked><span>Shuffle order <span class="sub">— draw in random sequence</span></span></label>
+      <label class="opt" id="optReverseRow"><input type="checkbox" id="optReverse"><span>Reverse mode <span class="sub">— show the expression, recall its name</span></span></label>
+      <label class="opt" id="optScratchRow"><input type="checkbox" id="optScratch" checked><span>Scratch pad <span class="sub">— write it from memory before revealing</span></span></label>
+      <label class="opt" id="optUnitsRow"><input type="checkbox" id="optUnits" checked><span>Show units <span class="sub">— SI units appear with the answer</span></span></label>
+    </div>
+    <button class="go" id="start">Start session</button>
+    <div class="count-hint" id="countHint"></div>
+  </section>
+
+  <section id="study" class="hidden">
+    <div class="navrow"><button class="homebtn" type="button">← home</button></div>
+    <div class="topbar">
+      <span class="stat"><b id="pDone">0</b> / <span id="pTot">0</span> mastered</span>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <span class="review-pill hidden" id="reviewPill">review 0</span>
+    </div>
+    <div class="card">
+      <span class="ct tl"></span><span class="ct tr"></span><span class="ct bl"></span><span class="ct br"></span>
+      <div class="chap" id="chap">—</div>
+      <div class="plabel" id="pLabel">Recall the expression for</div>
+      <div class="prompt" id="prompt">—</div>
+      <textarea class="scratch hidden" id="scratch" placeholder="write it from memory first…" spellcheck="false"></textarea>
+      <div class="spacer"></div>
+      <div class="answer hidden" id="answer">
+        <div class="a-label" id="aLabel">Answer</div>
+        <div class="eq" id="eq"></div>
+        <div class="a-name hidden" id="aName"></div>
+        <div class="units hidden" id="units"></div>
+        <div class="note hidden" id="note"></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-reveal" id="reveal">Reveal <span class="k">space</span></button>
+        <button class="btn btn-ok hidden" id="gotIt">Got it <span class="k">1</span></button>
+        <button class="btn btn-review hidden" id="review">Review again <span class="k">2</span></button>
+      </div>
+    </div>
+    <div class="foot">space reveals · 1 = got it · 2 = review again</div>
+  </section>
+
+  <section id="buildStudy" class="hidden">
+    <div class="navrow"><button class="homebtn" type="button">← home</button></div>
+    <div class="topbar">
+      <span class="stat"><b id="bClean">0</b> / <span id="bTot">0</span> first-try</span>
+      <div class="track"><div class="fill" id="bFill"></div></div>
+    </div>
+    <div class="card">
+      <span class="ct tl"></span><span class="ct tr"></span><span class="ct bl"></span><span class="ct br"></span>
+      <div class="chap" id="bChap">—</div>
+      <div class="plabel">Assemble the right-hand side</div>
+      <div class="bprompt" id="bName">—</div>
+      <div class="exprline"><span class="lhs" id="bLhs">=</span><div class="expr" id="expr"><span class="expr-empty">tap tiles to build…</span></div></div>
+      <div class="editrow"><button class="mini-btn" id="bBack">⌫ back</button><button class="mini-btn" id="bClearBtn">clear</button></div>
+      <div class="palette" id="palette"></div>
+      <div class="bfeedback hidden" id="bFeedback"></div>
+      <div class="actions">
+        <button class="btn btn-reveal" id="bSubmit">Check answer</button>
+        <button class="btn btn-review" id="bShow">Show answer</button>
+        <button class="btn btn-ok hidden" id="bNext">Next</button>
+      </div>
+    </div>
+    <div class="foot">build the right side · any algebraically equivalent form is accepted</div>
+  </section>
+
+  <section id="unitsStudy" class="hidden">
+    <div class="navrow"><button class="homebtn" type="button">← home</button></div>
+    <div class="topbar">
+      <span class="stat"><b id="uDone">0</b> / <span id="uTot">0</span> correct</span>
+      <div class="track"><div class="fill" id="uFill"></div></div>
+    </div>
+    <div class="card">
+      <span class="ct tl"></span><span class="ct tr"></span><span class="ct bl"></span><span class="ct br"></span>
+      <div class="qkind" id="uKind">—</div>
+      <div class="qtext" id="uQ">—</div>
+      <div class="mc" id="uOpts"></div>
+      <div class="spacer"></div>
+      <div class="actions"><button class="btn btn-ok hidden" id="uNext">Next</button></div>
+    </div>
+    <div class="foot">1–4 selects · tests SI units and conversions</div>
+  </section>
+
+  <section id="summary" class="summary hidden"></section>
+
+  <div class="colophon">Physical laws are facts, not copyrightable text · rendered for study<br>fork it, edit the deck, share the link</div>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function kr(tex,elm,disp){try{katex.render(tex,elm,{displayMode:!!disp,throwOnError:false});}catch(e){elm.textContent=tex;}}
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function rnd(a,b){return a+Math.random()*(b-a);}
+
+  /* ============ FLASHCARD DECK ============ */
+  var CH={21:"Coulomb's law",22:"Electric fields",23:"Gauss' law",24:"Electric potential",25:"Capacitance",26:"Current & resistance",27:"Circuits","G":"Geometry & integrals","T":"Traps & conventions","X":"Handy shortcuts"};
+  var BADGE={"G":"\u222b","T":"\u2691","X":"\u2605"};
+  var EQS=[
+    {ch:21,name:"Coulomb's law — magnitude of force between two point charges",tex:"F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{|q_1||q_2|}{r^2}",unit:"[F]=\\mathrm{N};\\ [q]=\\mathrm{C},\\ [r]=\\mathrm{m}",note:"k=\\dfrac{1}{4\\pi\\varepsilon_0}\\approx 8.99\\times10^{9}\\ \\mathrm{N\\!\\cdot\\! m^2/C^2}"},
+    {ch:21,name:"Coulomb's law in vector form (force on 1 due to 2)",tex:"\\vec F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1 q_2}{r^2}\\,\\hat r",unit:"[\\vec F]=\\mathrm{N}"},
+    {ch:21,name:"Net Coulomb force by superposition",tex:"\\vec F_{\\text{net}}=\\sum_i \\vec F_i",unit:"[F]=\\mathrm{N}",note:"\\text{vector sum of the individual pair forces}"},
+    {ch:21,name:"Coulomb constant k",tex:"k=\\dfrac{1}{4\\pi\\varepsilon_0}\\approx 8.99\\times10^{9}\\ \\mathrm{N\\!\\cdot\\! m^2/C^2}",unit:"[k]=\\mathrm{N\\!\\cdot\\! m^2/C^2}"},
+    {ch:21,name:"Permittivity of free space",tex:"\\varepsilon_0=8.85\\times10^{-12}\\ \\mathrm{C^2/(N\\!\\cdot\\! m^2)}",unit:"[\\varepsilon_0]=\\mathrm{C^2/(N\\!\\cdot\\! m^2)}=\\mathrm{F/m}"},
+    {ch:21,name:"Charge is quantized",tex:"q=n\\,e,\\quad n=0,\\pm1,\\pm2,\\dots",unit:"[q]=\\mathrm{C};\\ n\\ \\text{dimensionless}"},
+    {ch:21,name:"Elementary charge",tex:"e=1.60\\times10^{-19}\\ \\mathrm{C}",unit:"[e]=\\mathrm{C}"},
+    {ch:22,name:"Definition of the electric field",tex:"\\vec E=\\dfrac{\\vec F}{q_0}",unit:"[E]=\\mathrm{N/C}=\\mathrm{V/m}",note:"q_0 = \\text{positive test charge}"},
+    {ch:22,name:"Electric field of a point charge",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}",unit:"[E]=\\mathrm{N/C}"},
+    {ch:22,name:"Electric field from several charges (superposition)",tex:"\\vec E=\\sum_i \\vec E_i",unit:"[E]=\\mathrm{N/C}"},
+    {ch:22,name:"Electric dipole moment",tex:"\\vec p=q\\,\\vec d",unit:"[p]=\\mathrm{C\\!\\cdot\\! m}",note:"p=qd,\\ \\text{points from} -\\text{ to} +"},
+    {ch:22,name:"Electric field on the axis of a dipole (far field)",tex:"E=\\dfrac{1}{2\\pi\\varepsilon_0}\\dfrac{p}{z^3}",unit:"[E]=\\mathrm{N/C}",note:"\\text{for } z\\gg d"},
+    {ch:22,name:"Electric field on the central axis of a charged ring",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{qz}{\\left(z^2+R^2\\right)^{3/2}}",unit:"[E]=\\mathrm{N/C}"},
+    {ch:22,name:"Electric field on the central axis of a charged disk",tex:"E=\\dfrac{\\sigma}{2\\varepsilon_0}\\left(1-\\dfrac{z}{\\sqrt{z^2+R^2}}\\right)",unit:"[E]=\\mathrm{N/C};\\ [\\sigma]=\\mathrm{C/m^2}"},
+    {ch:22,name:"Acceleration of a charged particle in a uniform field",tex:"\\vec a=\\dfrac{q\\vec E}{m}",unit:"[a]=\\mathrm{m/s^2}",note:"\\text{constant } \\vec E \\Rightarrow \\text{projectile-like motion}"},
+    {ch:22,name:"Force on a point charge in an external field",tex:"\\vec F=q\\vec E",unit:"[F]=\\mathrm{N}"},
+    {ch:22,name:"Torque on a dipole in a uniform field",tex:"\\vec\\tau=\\vec p\\times\\vec E,\\qquad \\tau=pE\\sin\\theta",unit:"[\\tau]=\\mathrm{N\\!\\cdot\\! m}"},
+    {ch:22,name:"Potential energy of a dipole in a field",tex:"U=-\\vec p\\cdot\\vec E=-pE\\cos\\theta",unit:"[U]=\\mathrm{J}"},
+    {ch:23,name:"Electric flux through a closed surface",tex:"\\Phi=\\oint \\vec E\\cdot d\\vec A",unit:"[\\Phi]=\\mathrm{N\\!\\cdot\\! m^2/C}=\\mathrm{V\\!\\cdot\\! m}"},
+    {ch:23,name:"Flux through a flat area in a uniform field",tex:"\\Phi=\\vec E\\cdot\\vec A=EA\\cos\\theta",unit:"[\\Phi]=\\mathrm{N\\!\\cdot\\! m^2/C}"},
+    {ch:23,name:"Gauss' law",tex:"\\varepsilon_0\\oint \\vec E\\cdot d\\vec A=q_{\\text{enc}}",unit:"[q_{\\text{enc}}]=\\mathrm{C}",note:"\\text{equivalently } \\Phi=q_{\\text{enc}}/\\varepsilon_0"},
+    {ch:23,name:"Field just outside a charged conductor",tex:"E=\\dfrac{\\sigma}{\\varepsilon_0}",unit:"[E]=\\mathrm{N/C};\\ [\\sigma]=\\mathrm{C/m^2}"},
+    {ch:23,name:"Field of an infinite line of charge",tex:"E=\\dfrac{\\lambda}{2\\pi\\varepsilon_0\\, r}",unit:"[E]=\\mathrm{N/C};\\ [\\lambda]=\\mathrm{C/m}",note:"\\lambda=\\text{linear charge density}"},
+    {ch:23,name:"Field of an infinite nonconducting sheet of charge",tex:"E=\\dfrac{\\sigma}{2\\varepsilon_0}",unit:"[E]=\\mathrm{N/C};\\ [\\sigma]=\\mathrm{C/m^2}"},
+    {ch:23,name:"Field outside a spherical shell / uniform sphere",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}",unit:"[E]=\\mathrm{N/C}",note:"r\\ge R\\ \\text{— like a point charge at center}"},
+    {ch:23,name:"Field inside a uniform sphere of charge",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{R^3}\\,r",unit:"[E]=\\mathrm{N/C}",note:"r\\le R"},
+    {ch:23,name:"Field inside a conductor (or hollow shell)",tex:"E=0",unit:"[E]=\\mathrm{N/C}",note:"\\text{electrostatic equilibrium}"},
+    {ch:24,name:"Definition of electric potential",tex:"V=\\dfrac{U}{q_0}",unit:"[V]=\\mathrm{V}=\\mathrm{J/C}"},
+    {ch:24,name:"Potential difference from the field",tex:"V_f-V_i=-\\int_i^f \\vec E\\cdot d\\vec s",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential from the field (V=0 at infinity)",tex:"V=-\\int_\\infty^f \\vec E\\cdot d\\vec s",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Work by the electric force vs. potential energy",tex:"\\Delta U=-W",unit:"[U]=[W]=\\mathrm{J}"},
+    {ch:24,name:"Work by an applied force moving charge q",tex:"W_{\\text{app}}=q\\,\\Delta V",unit:"[W]=\\mathrm{J}"},
+    {ch:24,name:"Potential due to a point charge",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential due to a group of point charges",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\sum_i\\dfrac{q_i}{r_i}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential due to a continuous charge distribution",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\int\\dfrac{dq}{r}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Potential due to an electric dipole (far field)",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{p\\cos\\theta}{r^2}",unit:"[V]=\\mathrm{V}"},
+    {ch:24,name:"Field component from the potential",tex:"E_s=-\\dfrac{\\partial V}{\\partial s}",unit:"[E]=\\mathrm{V/m}=\\mathrm{N/C}",note:"\\text{vector form } \\vec E=-\\nabla V"},
+    {ch:24,name:"Potential energy of a two-charge system",tex:"U=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1 q_2}{r}",unit:"[U]=\\mathrm{J}"},
+    {ch:24,name:"Potential energy of a system of point charges",tex:"U=\\dfrac{1}{4\\pi\\varepsilon_0}\\sum_{i<j}\\dfrac{q_i q_j}{r_{ij}}",unit:"[U]=\\mathrm{J}",note:"\\text{one term per distinct pair}"},
+    {ch:24,name:"The electron-volt (energy unit)",tex:"1\\ \\mathrm{eV}=1.60\\times10^{-19}\\ \\mathrm{J}",unit:"[\\text{energy}]=\\mathrm{J}",note:"\\text{KE gained by charge } e \\text{ across } 1\\ \\mathrm{V}"},
+    {ch:25,name:"Definition of capacitance",tex:"q=CV",unit:"[q]=\\mathrm{C};\\ [C]=\\mathrm{F}"},
+    {ch:25,name:"Parallel-plate capacitor",tex:"C=\\dfrac{\\varepsilon_0 A}{d}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Field between the plates of a parallel-plate capacitor",tex:"E=\\dfrac{\\sigma}{\\varepsilon_0}=\\dfrac{q}{\\varepsilon_0 A}",unit:"[E]=\\mathrm{N/C}",note:"\\text{twice a lone sheet's } \\sigma/2\\varepsilon_0"},
+    {ch:25,name:"Cylindrical capacitor",tex:"C=2\\pi\\varepsilon_0\\dfrac{L}{\\ln(b/a)}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Spherical capacitor",tex:"C=4\\pi\\varepsilon_0\\dfrac{ab}{b-a}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Isolated conducting sphere",tex:"C=4\\pi\\varepsilon_0 R",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Capacitors in parallel",tex:"C_{\\text{eq}}=\\sum_j C_j",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Capacitors in series",tex:"\\dfrac{1}{C_{\\text{eq}}}=\\sum_j\\dfrac{1}{C_j}",unit:"[C]=\\mathrm{F}"},
+    {ch:25,name:"Energy stored in a capacitor",tex:"U=\\dfrac{q^2}{2C}=\\tfrac12 CV^2",unit:"[U]=\\mathrm{J}"},
+    {ch:25,name:"Energy density of an electric field",tex:"u=\\tfrac12\\varepsilon_0 E^2",unit:"[u]=\\mathrm{J/m^3}"},
+    {ch:25,name:"Capacitance with a dielectric",tex:"C=\\kappa\\, C_{\\text{air}}=\\dfrac{\\kappa\\varepsilon_0 A}{d}",unit:"[C]=\\mathrm{F};\\ \\kappa\\ \\text{dimensionless}",note:"\\kappa=\\text{dielectric constant}"},
+    {ch:25,name:"Gauss' law with a dielectric",tex:"\\varepsilon_0\\oint \\kappa\\vec E\\cdot d\\vec A=q_{\\text{free}}",unit:"[q_{\\text{free}}]=\\mathrm{C}"},
+    {ch:26,name:"Electric current",tex:"i=\\dfrac{dq}{dt}",unit:"[i]=\\mathrm{A}=\\mathrm{C/s}"},
+    {ch:26,name:"Current from current density",tex:"i=\\int \\vec J\\cdot d\\vec A",unit:"[i]=\\mathrm{A}"},
+    {ch:26,name:"Current density for uniform current",tex:"J=\\dfrac{i}{A}",unit:"[J]=\\mathrm{A/m^2}"},
+    {ch:26,name:"Current density and drift speed",tex:"\\vec J=(ne)\\,\\vec v_d",unit:"[J]=\\mathrm{A/m^2};\\ [v_d]=\\mathrm{m/s}",note:"n=\\text{carriers per unit volume}"},
+    {ch:26,name:"Definition of resistance",tex:"R=\\dfrac{V}{i}",unit:"[R]=\\Omega=\\mathrm{V/A}"},
+    {ch:26,name:"Resistivity (definition)",tex:"\\rho=\\dfrac{E}{J}",unit:"[\\rho]=\\Omega\\!\\cdot\\!\\mathrm{m}",note:"\\text{vector form } \\vec E=\\rho\\vec J"},
+    {ch:26,name:"Resistance of a uniform conductor",tex:"R=\\rho\\,\\dfrac{L}{A}",unit:"[R]=\\Omega"},
+    {ch:26,name:"Conductivity",tex:"\\sigma=\\dfrac{1}{\\rho}",unit:"[\\sigma]=(\\Omega\\!\\cdot\\!\\mathrm{m})^{-1}=\\mathrm{S/m}"},
+    {ch:26,name:"Resistivity vs. temperature",tex:"\\rho-\\rho_0=\\rho_0\\,\\alpha\\,(T-T_0)",unit:"[\\alpha]=\\mathrm{K^{-1}}\\ (\\text{per }^\\circ\\mathrm{C})"},
+    {ch:26,name:"Rate of electrical energy transfer (power)",tex:"P=iV",unit:"[P]=\\mathrm{W}"},
+    {ch:26,name:"Power dissipated in a resistor",tex:"P=i^2 R=\\dfrac{V^2}{R}",unit:"[P]=\\mathrm{W}"},
+    {ch:27,name:"Definition of emf",tex:"\\mathscr{E}=\\dfrac{dW}{dq}",unit:"[\\mathscr{E}]=\\mathrm{V}=\\mathrm{J/C}"},
+    {ch:27,name:"Current in a single-loop circuit",tex:"i=\\dfrac{\\mathscr{E}}{R+r}",unit:"[i]=\\mathrm{A}",note:"r=\\text{internal resistance}"},
+    {ch:27,name:"Terminal potential difference of a real battery",tex:"V=\\mathscr{E}-i\\,r",unit:"[V]=\\mathrm{V}"},
+    {ch:27,name:"Resistors in series",tex:"R_{\\text{eq}}=\\sum_j R_j",unit:"[R]=\\Omega"},
+    {ch:27,name:"Resistors in parallel",tex:"\\dfrac{1}{R_{\\text{eq}}}=\\sum_j\\dfrac{1}{R_j}",unit:"[R]=\\Omega"},
+    {ch:27,name:"Power of an emf device",tex:"P=i\\,\\mathscr{E}",unit:"[P]=\\mathrm{W}"},
+    {ch:27,name:"Kirchhoff's junction (current) rule",tex:"\\sum i_{\\text{in}}=\\sum i_{\\text{out}}",unit:"[i]=\\mathrm{A}"},
+    {ch:27,name:"Kirchhoff's loop (voltage) rule",tex:"\\sum_{\\text{loop}}\\Delta V=0",unit:"[V]=\\mathrm{V}"},
+    {ch:27,name:"Charging a capacitor — charge",tex:"q=C\\mathscr{E}\\left(1-e^{-t/RC}\\right)",unit:"[q]=\\mathrm{C};\\ [RC]=\\mathrm{s}"},
+    {ch:27,name:"Charging current in an RC circuit",tex:"i=\\dfrac{\\mathscr{E}}{R}\\,e^{-t/RC}",unit:"[i]=\\mathrm{A}"},
+    {ch:27,name:"Voltage across a charging capacitor",tex:"V_C=\\mathscr{E}\\left(1-e^{-t/RC}\\right)",unit:"[V]=\\mathrm{V}"},
+    {ch:27,name:"Discharging a capacitor — charge",tex:"q=q_0\\,e^{-t/RC}",unit:"[q]=\\mathrm{C}"},
+    {ch:27,name:"Discharging current in an RC circuit",tex:"i=\\dfrac{q_0}{RC}\\,e^{-t/RC}",unit:"[i]=\\mathrm{A}"},
+    {ch:27,name:"Capacitive time constant",tex:"\\tau=RC",unit:"[\\tau]=\\mathrm{s};\\ [R]=\\Omega,\\ [C]=\\mathrm{F}"},
+    {ch:27,name:"RC decay landmarks — one time constant and the half-life",tex:"q(\\tau)=q_0 e^{-1}\\approx 0.37\\,q_0,\\quad t_{1/2}=RC\\ln 2",unit:"[t]=\\mathrm{s}",note:"\\text{after one } \\tau \\text{, about } 37\\% \\text{ remains}"},
+    {ch:"G",name:"Circumference of a circle (radius r)",tex:"2\\pi r",unit:"\\mathrm{m}"},
+    {ch:"G",name:"Area of a circle / disk (radius r)",tex:"\\pi r^2",unit:"\\mathrm{m^2}"},
+    {ch:"G",name:"Surface area of a sphere (radius r)",tex:"4\\pi r^2",unit:"\\mathrm{m^2}",note:"\\text{Gaussian sphere; the } 4\\pi \\text{ cancels Coulomb's } 1/4\\pi"},
+    {ch:"G",name:"Volume of a sphere (radius r)",tex:"\\tfrac{4}{3}\\pi r^3",unit:"\\mathrm{m^3}",note:"\\text{for a uniform volume charge}"},
+    {ch:"G",name:"Lateral surface area of a cylinder (radius r, length L)",tex:"2\\pi r L",unit:"\\mathrm{m^2}",note:"\\text{side of a Gaussian cylinder}"},
+    {ch:"G",name:"Total solid angle around a closed surface",tex:"\\oint d\\Omega = 4\\pi",unit:"\\text{steradians (dimensionless)}",note:"\\text{why } \\Phi = q_{\\text{enc}}/\\varepsilon_0"},
+    {ch:"G",name:"Total charge from a linear charge density",tex:"q=\\int \\lambda\\, dl",unit:"[q]=\\mathrm{C};\\ [\\lambda]=\\mathrm{C/m}",note:"\\lambda = dq/dl"},
+    {ch:"G",name:"Total charge from a surface charge density",tex:"q=\\int \\sigma\\, dA",unit:"[q]=\\mathrm{C};\\ [\\sigma]=\\mathrm{C/m^2}",note:"\\sigma = dq/dA"},
+    {ch:"G",name:"Total charge from a volume charge density",tex:"q=\\int \\rho\\, dV",unit:"[q]=\\mathrm{C};\\ [\\rho]=\\mathrm{C/m^3}",note:"\\rho = dq/dV \\ \\text{(charge density, not resistivity)}"},
+    {ch:"G",name:"Electric field of a continuous charge distribution",tex:"\\vec E=\\dfrac{1}{4\\pi\\varepsilon_0}\\int \\dfrac{\\hat r}{r^2}\\,dq",unit:"[E]=\\mathrm{N/C}",note:"\\hat r \\text{ points from } dq \\text{ to the field point}"},
+    {ch:"G",name:"Electrostatic field is conservative (closed-loop line integral)",tex:"\\oint \\vec E\\cdot d\\vec s = 0",unit:"\\text{line integral of } \\vec E \\text{ in } \\mathrm{V}",note:"\\text{this is what lets } V \\text{ be defined}"},
+    {ch:"T",name:"Shell theorem — a uniform shell of charge seen from outside",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}\\quad(r>R)",unit:"[E]=\\mathrm{N/C}",note:"\\text{acts like a point charge at the center}"},
+    {ch:"T",name:"Shell theorem — a uniform shell of charge seen from inside",tex:"E=0\\quad(r<R)",unit:"[E]=\\mathrm{N/C}",note:"\\text{a solid ball instead gives } E\\propto r"},
+    {ch:"T",name:"Potential and field of a conductor in electrostatic equilibrium",tex:"E_{\\text{in}}=0,\\quad V=\\text{const throughout}",note:"V_{\\text{out}}=\\tfrac{1}{4\\pi\\varepsilon_0}q/r;\\ \\text{inside}=\\text{surface value}"},
+    {ch:"T",name:"How a capacitor behaves at the start and end of RC charging",tex:"t=0:\\ \\text{wire (short)};\\quad t\\to\\infty:\\ \\text{break (open)}",note:"\\text{uncharged passes current; charged blocks it}"},
+    {ch:"T",name:"Kirchhoff sign rules for traversing a loop",tex:"\\text{resistor along } i:\\ -iR;\\quad \\text{emf } -\\!\\to\\!+:\\ +\\mathscr{E}",note:"\\text{flip the sign if you traverse the other way}"},
+    {ch:"T",name:"What Ohm's law really is",tex:"\\vec E=\\rho\\vec J",unit:"[\\rho]=\\Omega\\!\\cdot\\!\\mathrm{m}",note:"V=iR\\ \\text{holds only for ohmic devices}"},
+    {ch:"X",name:"Uniform field from a potential difference",tex:"E=\\dfrac{V}{d}",unit:"[E]=\\mathrm{V/m}=\\mathrm{N/C}",note:"\\text{parallel plates, spacing } d"},
+    {ch:"X",name:"Charge from a steady current",tex:"q=i\\,t",unit:"[q]=\\mathrm{C}",note:"\\text{constant current for time } t"},
+    {ch:"X",name:"Number of elementary charges",tex:"n=\\dfrac{q}{e}",unit:"\\text{dimensionless (a count)}"},
+    {ch:"X",name:"Capacitor energy — charge–voltage form",tex:"U=\\tfrac12 qV",unit:"[U]=\\mathrm{J}",note:"\\text{same as } q^2/2C=\\tfrac12 CV^2"},
+    {ch:"X",name:"Two resistors in parallel (product over sum)",tex:"R_{\\text{eq}}=\\dfrac{R_1 R_2}{R_1+R_2}",unit:"[R]=\\Omega",note:"\\text{shortcut for exactly two resistors}"},
+    {ch:"X",name:"Two capacitors in series (product over sum)",tex:"C_{\\text{eq}}=\\dfrac{C_1 C_2}{C_1+C_2}",unit:"[C]=\\mathrm{F}",note:"\\text{shortcut for exactly two capacitors}"},
+    {ch:"X",name:"Speed gained across a potential difference",tex:"v=\\sqrt{\\dfrac{2q\\,\\Delta V}{m}}",unit:"[v]=\\mathrm{m/s}",note:"\\text{from } \\tfrac12 mv^2=q\\,\\Delta V"},
+    {ch:"X",name:"Drift speed of charge carriers",tex:"v_d=\\dfrac{i}{nAe}",unit:"[v_d]=\\mathrm{m/s}",note:"n=\\text{carriers per unit volume}"}
+  ];
+  EQS.forEach(function(e,i){e.id=i;});
+
+  /* ============ EXPRESSION EVALUATOR + EQUIVALENCE (tested) ============ */
+  var C_e0=8.8541878128e-12, C_pi=Math.PI, C_k=1/(4*C_pi*C_e0), C_qe=1.602176634e-19;
+  var CONSTS={pi:C_pi,e0:C_e0,k:C_k,qe:C_qe};
+  var FUNCS={sin:Math.sin,cos:Math.cos,tan:Math.tan,sqrt:Math.sqrt,ln:Math.log,exp:Math.exp,abs:Math.abs};
+  var OP={'+':function(a,b){return a+b;},'-':function(a,b){return a-b;},'*':function(a,b){return a*b;},'/':function(a,b){return a/b;},'^':function(a,b){return Math.pow(a,b);}};
+  function tokenize(s){
+    var t=[],i=0,dig=function(c){return c>='0'&&c<='9';},al=function(c){return /[a-zA-Z_]/.test(c);};
+    while(i<s.length){var c=s[i];
+      if(c===' '||c==='\t'||c==='\n'){i++;continue;}
+      if(dig(c)||(c==='.'&&dig(s[i+1]))){var j=i+1;while(j<s.length&&(dig(s[j])||s[j]==='.'))j++;t.push({t:'num',v:parseFloat(s.slice(i,j))});i=j;continue;}
+      if(al(c)){var j2=i+1;while(j2<s.length&&/[a-zA-Z0-9_]/.test(s[j2]))j2++;var n=s.slice(i,j2);i=j2;t.push(FUNCS[n]?{t:'func',v:n}:{t:'id',v:n});continue;}
+      if('+-*/^'.indexOf(c)>=0){t.push({t:'op',v:c});i++;continue;}
+      if(c==='('){t.push({t:'lp'});i++;continue;}
+      if(c===')'){t.push({t:'rp'});i++;continue;}
+      throw {bad:'char'};
+    } return t;
+  }
+  function prec(o){return o==='u'?3.5:o==='^'?4:(o==='*'||o==='/')?3:(o==='+'||o==='-')?2:0;}
+  function rassoc(o){return o==='^'||o==='u';}
+  function toRPN(tokens){
+    var out=[],ops=[],pv=false;
+    function pushOp(v){while(ops.length){var top=ops[ops.length-1];if(top.t==='op'&&(prec(top.v)>prec(v)||(prec(top.v)===prec(v)&&!rassoc(v))))out.push(ops.pop());else break;}ops.push({t:'op',v:v});}
+    for(var i=0;i<tokens.length;i++){var tk=tokens[i];
+      if(tk.t==='num'||tk.t==='id'){if(pv)pushOp('*');out.push(tk);pv=true;}
+      else if(tk.t==='func'){if(pv)pushOp('*');ops.push(tk);pv=false;}
+      else if(tk.t==='op'){var v=tk.v;if(v==='-'&&!pv)v='u';else if(v==='+'&&!pv)continue;pushOp(v);pv=false;}
+      else if(tk.t==='lp'){if(pv)pushOp('*');ops.push(tk);pv=false;}
+      else if(tk.t==='rp'){while(ops.length&&ops[ops.length-1].t!=='lp')out.push(ops.pop());if(!ops.length)throw{bad:'paren'};ops.pop();if(ops.length&&ops[ops.length-1].t==='func')out.push(ops.pop());pv=true;}
+    }
+    while(ops.length){var o=ops.pop();if(o.t==='lp')throw{bad:'paren'};out.push(o);}
+    return out;
+  }
+  function evalRPN(rpn,env){
+    var st=[];
+    for(var i=0;i<rpn.length;i++){var tk=rpn[i];
+      if(tk.t==='num')st.push(tk.v);
+      else if(tk.t==='id'){var n=tk.v;var val=(n in CONSTS)?CONSTS[n]:(n in env?env[n]:undefined);if(val===undefined)throw{bad:'unknown'};st.push(val);}
+      else if(tk.t==='func'){if(st.length<1)throw{bad:'inc'};var a=st.pop();st.push(FUNCS[tk.v](a));}
+      else if(tk.t==='op'){if(tk.v==='u'){if(st.length<1)throw{bad:'inc'};st.push(-st.pop());}else{if(st.length<2)throw{bad:'inc'};var b=st.pop(),aa=st.pop();st.push(OP[tk.v](aa,b));}}
+    }
+    if(st.length!==1)throw{bad:'malformed'};
+    return st[0];
+  }
+  function compile(s){return toRPN(tokenize(s));}
+  function idsOf(s){var r={};tokenize(s).forEach(function(t){if(t.t==='id'&&!(t.v in CONSTS))r[t.v]=1;});return Object.keys(r);}
+  function equiv(canon,student,ranges){
+    var rpnC,rpnS;
+    try{rpnC=compile(canon);}catch(e){return{ok:false,reason:'internal'};}
+    try{rpnS=compile(student);}catch(e){return{ok:false,reason:'parse'};}
+    var vv={};idsOf(canon).concat(idsOf(student)).forEach(function(v){vv[v]=1;});var vars=Object.keys(vv);
+    var checked=0;
+    for(var t=0;t<16&&checked<10;t++){
+      var env={};vars.forEach(function(v){var r=ranges[v]||[1,3];env[v]=rnd(r[0],r[1]);});
+      var vc,vs;
+      try{vc=evalRPN(rpnC,env);}catch(e){return{ok:false,reason:'internal'};}
+      if(!isFinite(vc))continue;
+      try{vs=evalRPN(rpnS,env);}catch(e){return{ok:false,reason:'eval'};}
+      if(!isFinite(vs))return{ok:false,reason:'range'};
+      checked++;
+      if(Math.abs(vc-vs)/(Math.abs(vc)+1e-12)>1e-6&&Math.abs(vc-vs)>1e-12)return{ok:false,reason:'diff'};
+    }
+    return checked>=3?{ok:true}:{ok:false,reason:'range'};
+  }
+
+  /* ============ BUILD DECK ============ */
+  var TK={
+    '1':{l:'1',c:'1'},'2':{l:'2',c:'2'},'3':{l:'3',c:'3'},'4':{l:'4',c:'4'},
+    'pi':{l:'\u03c0',c:'pi'},'e0':{l:'\u03b5\u2080',c:'e0'},'k':{l:'k',c:'k'},'e':{l:'e',c:'qe'},
+    'mul':{l:'\u00b7',c:'*'},'div':{l:'/',c:'/'},'add':{l:'+',c:'+'},'sub':{l:'\u2212',c:'-'},'pow':{l:'^',c:'^'},
+    'lp':{l:'(',c:'('},'rp':{l:')',c:')'},
+    'sin':{l:'sin',c:'sin'},'cos':{l:'cos',c:'cos'},'ln':{l:'ln',c:'ln'},'sqrt':{l:'\u221a(',c:'sqrt('},'expo':{l:'e^(',c:'exp('},
+    'q':{l:'q',c:'q'},'q1':{l:'q\u2081',c:'q1'},'q2':{l:'q\u2082',c:'q2'},'q0':{l:'q\u2080',c:'q0'},
+    'r':{l:'r',c:'r'},'R':{l:'R',c:'R'},'R1':{l:'R\u2081',c:'R1'},'R2':{l:'R\u2082',c:'R2'},
+    'z':{l:'z',c:'z'},'d':{l:'d',c:'d'},'m':{l:'m',c:'m'},'E':{l:'E',c:'E'},
+    'sig':{l:'\u03c3',c:'sig'},'lam':{l:'\u03bb',c:'lam'},'th':{l:'\u03b8',c:'th'},'p':{l:'p',c:'p'},
+    'V':{l:'V',c:'V'},'dV':{l:'\u0394V',c:'dV'},'A':{l:'A',c:'A'},'L':{l:'L',c:'L'},
+    'a':{l:'a',c:'a'},'b':{l:'b',c:'b'},'kap':{l:'\u03ba',c:'kap'},'i':{l:'i',c:'i'},
+    'emf':{l:'\u2130',c:'emf'},'C':{l:'C',c:'C'},'C1':{l:'C\u2081',c:'C1'},'C2':{l:'C\u2082',c:'C2'},
+    't':{l:'t',c:'t'},'n':{l:'n',c:'n'},'rho':{l:'\u03c1',c:'rho'}
+  };
+  var BUILD=[
+    {ch:21,diff:'core',name:"Charge quantization",lhs:"q =",tex:"q=n\\,e",canon:"n*qe",vars:{n:[1,5]},pal:['n','e','mul','add','2']},
+    {ch:21,diff:'core',name:"Coulomb's law (magnitude)",lhs:"F =",tex:"F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1q_2}{r^2}",canon:"q1*q2/(4*pi*e0*r^2)",vars:{q1:[1,3],q2:[1,3],r:[1,3]},pal:['q1','q2','r','k','4','pi','e0','mul','div','pow','2','lp','rp','1']},
+    {ch:21,diff:'core',name:"Number of elementary charges",lhs:"n =",tex:"n=\\dfrac{q}{e}",canon:"q/qe",vars:{q:[1,3]},pal:['q','e','div','mul','2']},
+    {ch:22,diff:'core',name:"Force on a charge in a field",lhs:"\\vec F =",tex:"\\vec F=q\\vec E",canon:"q*E",vars:{q:[1,3],E:[1,3]},pal:['q','E','mul','div','r']},
+    {ch:22,diff:'core',name:"Acceleration in a uniform field",lhs:"a =",tex:"a=\\dfrac{qE}{m}",canon:"q*E/m",vars:{q:[1,3],E:[1,3],m:[1,3]},pal:['q','E','m','mul','div','lp','rp']},
+    {ch:22,diff:'core',name:"Electric dipole moment",lhs:"p =",tex:"p=qd",canon:"q*d",vars:{q:[1,3],d:[1,3]},pal:['q','d','mul','add','2']},
+    {ch:22,diff:'core',name:"Field of a point charge",lhs:"E =",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}",canon:"k*q/r^2",vars:{q:[1,3],r:[1,3]},pal:['k','q','r','pow','2','div','mul','4','pi','e0','lp','rp','1']},
+    {ch:22,diff:'hard',name:"Field on the axis of a dipole",lhs:"E =",tex:"E=\\dfrac{1}{2\\pi\\varepsilon_0}\\dfrac{p}{z^3}",canon:"p/(2*pi*e0*z^3)",vars:{p:[1,3],z:[1,3]},pal:['p','2','pi','e0','z','3','div','mul','pow','lp','rp','1']},
+    {ch:22,diff:'hard',name:"Field on the axis of a charged ring",lhs:"E =",tex:"E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{qz}{(z^2+R^2)^{3/2}}",canon:"k*q*z/(z^2+R^2)^(3/2)",vars:{q:[1,3],z:[1,3],R:[1,3]},pal:['k','q','z','R','4','pi','e0','add','mul','div','pow','2','3','lp','rp']},
+    {ch:22,diff:'hard',name:"Field on the axis of a charged disk",lhs:"E =",tex:"E=\\dfrac{\\sigma}{2\\varepsilon_0}\\!\\left(1-\\dfrac{z}{\\sqrt{z^2+R^2}}\\right)",canon:"sig/(2*e0)*(1-z/sqrt(z^2+R^2))",vars:{sig:[1,3],z:[1,3],R:[1,3]},pal:['sig','z','R','1','2','e0','sub','div','mul','sqrt','pow','add','lp','rp']},
+    {ch:22,diff:'hard',name:"Torque on a dipole",lhs:"\\tau =",tex:"\\tau=pE\\sin\\theta",canon:"p*E*sin(th)",vars:{p:[1,3],E:[1,3],th:[.3,1.3]},pal:['p','E','sin','th','mul','cos','lp','rp']},
+    {ch:22,diff:'hard',name:"Potential energy of a dipole",lhs:"U =",tex:"U=-pE\\cos\\theta",canon:"-p*E*cos(th)",vars:{p:[1,3],E:[1,3],th:[.3,1.3]},pal:['p','E','cos','th','sub','mul','sin','lp','rp']},
+    {ch:23,diff:'core',name:"Field just outside a conductor",lhs:"E =",tex:"E=\\dfrac{\\sigma}{\\varepsilon_0}",canon:"sig/e0",vars:{sig:[1,3]},pal:['sig','e0','div','2','mul']},
+    {ch:23,diff:'core',name:"Field of an infinite sheet of charge",lhs:"E =",tex:"E=\\dfrac{\\sigma}{2\\varepsilon_0}",canon:"sig/(2*e0)",vars:{sig:[1,3]},pal:['sig','2','e0','div','mul','lp','rp']},
+    {ch:23,diff:'hard',name:"Field of an infinite line of charge",lhs:"E =",tex:"E=\\dfrac{\\lambda}{2\\pi\\varepsilon_0 r}",canon:"lam/(2*pi*e0*r)",vars:{lam:[1,3],r:[1,3]},pal:['lam','2','pi','e0','r','div','mul','lp','rp','4']},
+    {ch:24,diff:'core',name:"Potential of a point charge",lhs:"V =",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r}",canon:"k*q/r",vars:{q:[1,3],r:[1,3]},pal:['k','q','r','div','mul','4','pi','e0','lp','rp','1']},
+    {ch:24,diff:'core',name:"Uniform field from a potential",lhs:"E =",tex:"E=\\dfrac{V}{d}",canon:"V/d",vars:{V:[1,3],d:[1,3]},pal:['V','d','div','mul','2']},
+    {ch:24,diff:'hard',name:"Potential of a dipole (far field)",lhs:"V =",tex:"V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{p\\cos\\theta}{r^2}",canon:"k*p*cos(th)/r^2",vars:{p:[1,3],th:[.3,1.3],r:[1,3]},pal:['k','p','cos','th','r','pow','2','div','mul','4','pi','e0','lp','rp','sin']},
+    {ch:24,diff:'hard',name:"Potential energy of two charges",lhs:"U =",tex:"U=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1q_2}{r}",canon:"k*q1*q2/r",vars:{q1:[1,3],q2:[1,3],r:[1,3]},pal:['k','q1','q2','r','mul','div','4','pi','e0','lp','rp','pow','2']},
+    {ch:24,diff:'hard',name:"Speed gained across a potential difference",lhs:"v =",tex:"v=\\sqrt{\\dfrac{2q\\,\\Delta V}{m}}",canon:"sqrt(2*q*dV/m)",vars:{q:[1,3],dV:[1,3],m:[1,3]},pal:['sqrt','2','q','dV','m','mul','div','lp','rp']},
+    {ch:25,diff:'core',name:"Definition of capacitance",lhs:"q =",tex:"q=CV",canon:"C*V",vars:{C:[1,3],V:[1,3]},pal:['C','V','mul','div','add']},
+    {ch:25,diff:'core',name:"Parallel-plate capacitor",lhs:"C =",tex:"C=\\dfrac{\\varepsilon_0 A}{d}",canon:"e0*A/d",vars:{A:[1,3],d:[1,3]},pal:['e0','A','d','mul','div','lp','rp']},
+    {ch:25,diff:'core',name:"Energy density of a field",lhs:"u =",tex:"u=\\tfrac12\\varepsilon_0 E^2",canon:"0.5*e0*E^2",vars:{E:[1,3]},pal:['1','2','e0','E','div','mul','pow','lp','rp']},
+    {ch:25,diff:'core',name:"Capacitor energy (charge–voltage)",lhs:"U =",tex:"U=\\tfrac12 qV",canon:"0.5*q*V",vars:{q:[1,3],V:[1,3]},pal:['1','2','q','V','div','mul','pow','lp','rp']},
+    {ch:25,diff:'hard',name:"Cylindrical capacitor",lhs:"C =",tex:"C=2\\pi\\varepsilon_0\\dfrac{L}{\\ln(b/a)}",canon:"2*pi*e0*L/ln(b/a)",vars:{L:[1,3],a:[1,2],b:[3,6]},pal:['2','pi','e0','L','ln','a','b','div','mul','lp','rp']},
+    {ch:25,diff:'hard',name:"Spherical capacitor",lhs:"C =",tex:"C=4\\pi\\varepsilon_0\\dfrac{ab}{b-a}",canon:"4*pi*e0*a*b/(b-a)",vars:{a:[1,2],b:[3,6]},pal:['4','pi','e0','a','b','sub','mul','div','lp','rp']},
+    {ch:25,diff:'hard',name:"Capacitance with a dielectric",lhs:"C =",tex:"C=\\dfrac{\\kappa\\varepsilon_0 A}{d}",canon:"kap*e0*A/d",vars:{kap:[1,3],A:[1,3],d:[1,3]},pal:['kap','e0','A','d','mul','div','lp','rp']},
+    {ch:25,diff:'hard',name:"Two capacitors in series (product over sum)",lhs:"C_{eq} =",tex:"C_{\\text{eq}}=\\dfrac{C_1C_2}{C_1+C_2}",canon:"C1*C2/(C1+C2)",vars:{C1:[1,3],C2:[1,3]},pal:['C1','C2','mul','add','div','lp','rp']},
+    {ch:26,diff:'core',name:"Charge from a steady current",lhs:"q =",tex:"q=it",canon:"i*t",vars:{i:[1,3],t:[1,3]},pal:['i','t','mul','div','add']},
+    {ch:26,diff:'core',name:"Resistance of a uniform conductor",lhs:"R =",tex:"R=\\rho\\dfrac{L}{A}",canon:"rho*L/A",vars:{rho:[1,3],L:[1,3],A:[1,3]},pal:['rho','L','A','mul','div','lp','rp']},
+    {ch:26,diff:'core',name:"Power delivered",lhs:"P =",tex:"P=iV",canon:"i*V",vars:{i:[1,3],V:[1,3]},pal:['i','V','mul','div','add']},
+    {ch:26,diff:'core',name:"Power dissipated in a resistor",lhs:"P =",tex:"P=i^2R",canon:"i^2*R",vars:{i:[1,3],R:[1,3]},pal:['i','R','pow','2','mul','div','V']},
+    {ch:26,diff:'hard',name:"Drift speed of charge carriers",lhs:"v_d =",tex:"v_d=\\dfrac{i}{nAe}",canon:"i/(n*A*qe)",vars:{i:[1,3],n:[1,5],A:[1,3]},pal:['i','n','A','e','div','mul','lp','rp']},
+    {ch:27,diff:'core',name:"Capacitive time constant",lhs:"\\tau =",tex:"\\tau=RC",canon:"R*C",vars:{R:[1,3],C:[1,3]},pal:['R','C','mul','add','div']},
+    {ch:27,diff:'core',name:"Terminal voltage of a real battery",lhs:"V =",tex:"V=\\mathscr{E}-ir",canon:"emf-i*r",vars:{emf:[2,5],i:[.1,1],r:[.1,1]},pal:['emf','i','r','sub','mul','add','lp','rp']},
+    {ch:27,diff:'core',name:"Two resistors in parallel (product over sum)",lhs:"R_{eq} =",tex:"R_{\\text{eq}}=\\dfrac{R_1R_2}{R_1+R_2}",canon:"R1*R2/(R1+R2)",vars:{R1:[1,3],R2:[1,3]},pal:['R1','R2','mul','add','div','lp','rp']},
+    {ch:27,diff:'hard',name:"Discharging a capacitor — charge",lhs:"q =",tex:"q=q_0e^{-t/RC}",canon:"q0*exp(-t/(R*C))",vars:{q0:[1,3],t:[.1,2],R:[1,3],C:[1,3]},pal:['q0','expo','sub','t','R','C','div','mul','lp','rp']},
+    {ch:27,diff:'hard',name:"Charging current in an RC circuit",lhs:"i =",tex:"i=\\dfrac{\\mathscr{E}}{R}e^{-t/RC}",canon:"emf/R*exp(-t/(R*C))",vars:{emf:[1,3],R:[1,3],t:[.1,2],C:[1,3]},pal:['emf','R','expo','sub','t','C','div','mul','lp','rp']},
+    {ch:27,diff:'hard',name:"Charging a capacitor — charge",lhs:"q =",tex:"q=C\\mathscr{E}(1-e^{-t/RC})",canon:"C*emf*(1-exp(-t/(R*C)))",vars:{C:[1,3],emf:[1,3],t:[.1,2],R:[1,3]},pal:['C','emf','1','sub','expo','t','R','div','mul','lp','rp']}
+  ];
+  BUILD.forEach(function(e,i){e.id=i;});
+
+  /* ============ UNITS QUIZ DATA ============ */
+  var QU=[
+    {q:"Electric field, \\vec E",u:"\\mathrm{N/C}"},{q:"Electric potential, V",u:"\\mathrm{V}"},
+    {q:"Force, F",u:"\\mathrm{N}"},{q:"Charge, q",u:"\\mathrm{C}"},
+    {q:"Electric flux, \\Phi_E",u:"\\mathrm{N\\!\\cdot\\! m^2/C}"},{q:"Capacitance, C",u:"\\mathrm{F}"},
+    {q:"Resistance, R",u:"\\Omega"},{q:"Resistivity, \\rho",u:"\\Omega\\!\\cdot\\!\\mathrm{m}"},
+    {q:"Conductivity, \\sigma",u:"\\mathrm{S/m}"},{q:"Current, i",u:"\\mathrm{A}"},
+    {q:"Current density, J",u:"\\mathrm{A/m^2}"},{q:"Power, P",u:"\\mathrm{W}"},
+    {q:"Energy, U",u:"\\mathrm{J}"},{q:"Energy density, u",u:"\\mathrm{J/m^3}"},
+    {q:"Linear charge density, \\lambda",u:"\\mathrm{C/m}"},{q:"Surface charge density, \\sigma",u:"\\mathrm{C/m^2}"},
+    {q:"Volume charge density, \\rho",u:"\\mathrm{C/m^3}"},{q:"Dipole moment, p",u:"\\mathrm{C\\!\\cdot\\! m}"},
+    {q:"Permittivity, \\varepsilon_0",u:"\\mathrm{F/m}"},{q:"emf, \\mathscr{E}",u:"\\mathrm{V}"},
+    {q:"Time constant, \\tau",u:"\\mathrm{s}"},{q:"Drift speed, v_d",u:"\\mathrm{m/s}"}
+  ];
+  var UID=[
+    {a:"1\\ \\mathrm{V}",ok:"\\mathrm{J/C}",d:["\\mathrm{C/J}","\\mathrm{N/C}","\\mathrm{W\\!\\cdot\\! s}"]},
+    {a:"1\\ \\Omega",ok:"\\mathrm{V/A}",d:["\\mathrm{A/V}","\\mathrm{V\\!\\cdot\\! A}","\\mathrm{J/C}"]},
+    {a:"1\\ \\mathrm{F}",ok:"\\mathrm{C/V}",d:["\\mathrm{V/C}","\\mathrm{C\\!\\cdot\\! V}","\\mathrm{J/V}"]},
+    {a:"1\\ \\mathrm{W}",ok:"\\mathrm{J/s}",d:["\\mathrm{s/J}","\\mathrm{J\\!\\cdot\\! s}","\\mathrm{V/A}"]},
+    {a:"1\\ \\mathrm{A}",ok:"\\mathrm{C/s}",d:["\\mathrm{s/C}","\\mathrm{C\\!\\cdot\\! s}","\\mathrm{J/C}"]},
+    {a:"1\\ \\mathrm{N/C}",ok:"\\mathrm{V/m}",d:["\\mathrm{m/V}","\\mathrm{J/C}","\\mathrm{C/m}"]},
+    {a:"1\\ \\mathrm{V/m}",ok:"\\mathrm{N/C}",d:["\\mathrm{C/N}","\\mathrm{J/m}","\\mathrm{N\\!\\cdot\\! C}"]},
+    {a:"1\\ \\mathrm{W}",ok:"\\mathrm{V\\!\\cdot\\! A}",d:["\\mathrm{V/A}","\\mathrm{A/V}","\\mathrm{J\\!\\cdot\\! s}"]}
+  ];
+  var PRE=[["p",-12],["n",-9],["\\mu ",-6],["m",-3],["k",3],["M",6],["G",9]];
+  var BASEU=["\\mathrm{F}","\\mathrm{C}","\\Omega","\\mathrm{V}","\\mathrm{A}","\\mathrm{s}","\\mathrm{J}","\\mathrm{W}"];
+  var COEFS=[1,1.5,2,2.2,3,4,4.7,5,6.8];
+  function sci(coef,exp,unit){ if(exp===0) return coef+"\\ "+unit; return coef+"\\times10^{"+exp+"}\\ "+unit; }
+  function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+  function convQuestion(){
+    var pr=pick(PRE),bu=pick(BASEU),co=pick(COEFS);
+    var prl=pr[0], pex=pr[1];
+    var prompt="\\text{Convert}\\ "+co+"\\ "+prl+"\\mathrm{"+baseSym(bu)+"} \\ \\text{to}\\ "+bu;
+    var correct=sci(co,pex,bu);
+    var opts=[{tex:correct,ok:true}];
+    var used={}; used[pex]=1;
+    var offs=[3,-3,6,-6,pex>0?-pex:-pex];
+    for(var i=0;i<offs.length&&opts.length<4;i++){var e2=pex+offs[i]; if(used[e2])continue; used[e2]=1; opts.push({tex:sci(co,e2,bu),ok:false});}
+    while(opts.length<4){var e3=pex+ (Math.floor(rnd(1,9))); if(used[e3]){continue;} used[e3]=1; opts.push({tex:sci(co,e3,bu),ok:false});}
+    return {kind:'Unit conversion',q:prompt,opts:shuffle(opts)};
+  }
+  function baseSym(bu){ return bu.replace('\\mathrm{','').replace('}','').replace('\\Omega','\\Omega'); }
+  function evQuestion(){
+    var n=pick([1,2,3,5,10]); var J=(n*1.602).toFixed(2);
+    var prompt="\\text{Convert}\\ "+n+"\\ \\mathrm{eV}\\ \\text{to joules}";
+    var correct=n*1.602;
+    var opts=[{tex:correct.toFixed(2)+"\\times10^{-19}\\ \\mathrm{J}",ok:true}];
+    opts.push({tex:correct.toFixed(2)+"\\times10^{-19}\\ \\mathrm{eV}",ok:false});
+    opts.push({tex:correct.toFixed(2)+"\\times10^{-16}\\ \\mathrm{J}",ok:false});
+    opts.push({tex:correct.toFixed(2)+"\\times10^{-12}\\ \\mathrm{J}",ok:false});
+    return {kind:'Unit conversion',q:prompt,opts:shuffle(opts)};
+  }
+  function quQuestion(item){
+    var pool=[];QU.forEach(function(x){if(x.u!==item.u)pool.push(x.u);});
+    pool=shuffle(pool);var ds=[],seen={};seen[item.u]=1;
+    for(var i=0;i<pool.length&&ds.length<3;i++){if(!seen[pool[i]]){seen[pool[i]]=1;ds.push(pool[i]);}}
+    var opts=[{tex:item.u,ok:true}];ds.forEach(function(d){opts.push({tex:d,ok:false});});
+    return {kind:'SI unit of a quantity',q:"\\text{What is the SI unit of}\\ "+item.q+" \\text{?}",opts:shuffle(opts)};
+  }
+  function uidQuestion(item){
+    var opts=[{tex:item.ok,ok:true}];item.d.forEach(function(d){opts.push({tex:d,ok:false});});
+    return {kind:'Unit identity',q:item.a+" \\;=\\; ?",opts:shuffle(opts)};
+  }
+  function buildUnitsDeck(){
+    var deck=[];
+    QU.forEach(function(x){deck.push(quQuestion(x));});
+    UID.forEach(function(x){deck.push(uidQuestion(x));});
+    for(var i=0;i<8;i++)deck.push(convQuestion());
+    for(var j=0;j<3;j++)deck.push(evQuestion());
+    return shuffle(deck);
+  }
+
+  /* ============ STATE + SETUP ============ */
+  var CHIP_ORDER=Object.keys(CH);
+  var sel={};CHIP_ORDER.forEach(function(c){sel[c]=1;});
+  var S={mode:'flash',diff:'all',shuffle:true,reverse:false,scratch:true,units:true};
+
+  function chapLabel(ch){return isNaN(+ch)?CH[ch]:('Ch '+ch+' \u00b7 '+CH[ch]);}
+  function chapTag(ch){return isNaN(+ch)?(BADGE[ch]||'\u2022'):('Ch'+ch);}
+
+  var counts={};EQS.forEach(function(e){counts[e.ch]=(counts[e.ch]||0)+1;});
+  var bcounts={};BUILD.forEach(function(e){bcounts[e.ch]=(bcounts[e.ch]||0)+1;});
+  var chipsBox=$('chips');
+  CHIP_ORDER.forEach(function(ch){
+    var badge=isNaN(+ch)?(BADGE[ch]||'\u2022'):ch;
+    var b=document.createElement('button');
+    b.className='chip';b.setAttribute('data-on','1');b.setAttribute('data-ch',ch);
+    b.innerHTML='<span class="n">'+badge+'</span><span>'+CH[ch]+'</span><span class="c" data-cnt="'+ch+'">'+counts[ch]+'</span>';
+    b.onclick=function(){var on=b.getAttribute('data-on')==='1';b.setAttribute('data-on',on?'0':'1');sel[ch]=on?0:1;hint();};
+    chipsBox.appendChild(b);
+  });
+  function setAll(v){document.querySelectorAll('.chip').forEach(function(b){b.setAttribute('data-on',v?'1':'0');sel[b.getAttribute('data-ch')]=v?1:0;});hint();}
+  $('selAll').onclick=function(){setAll(true);};
+  $('selNone').onclick=function(){setAll(false);};
+  function selEqs(){return EQS.filter(function(e){return sel[e.ch];});}
+  function buildEqs(){return BUILD.filter(function(e){return sel[e.ch]&&(S.diff==='all'||e.diff===S.diff);});}
+
+  document.querySelectorAll('.seg').forEach(function(b){b.onclick=function(){document.querySelectorAll('.seg').forEach(function(x){x.classList.remove('on');});b.classList.add('on');S.mode=b.getAttribute('data-mode');updateModeUI();};});
+  document.querySelectorAll('.diff-btn').forEach(function(b){b.onclick=function(){document.querySelectorAll('.diff-btn').forEach(function(x){x.classList.remove('on');});b.classList.add('on');S.diff=b.getAttribute('data-diff');hint();};});
+
+  function updateModeUI(){
+    var m=S.mode;
+    $('diffbar').classList.toggle('hidden',m!=='build');
+    $('unitsNote').classList.toggle('hidden',m!=='units');
+    $('chips').classList.toggle('hidden',m==='units');
+    $('selallRow').classList.toggle('hidden',m==='units');
+    $('scopeLbl').classList.toggle('hidden',m==='units');
+    $('optsBlock').classList.toggle('hidden',m!=='flash');
+    // update chip counts for build vs flash
+    document.querySelectorAll('.chip .c').forEach(function(sp){var ch=sp.getAttribute('data-cnt');sp.textContent=(m==='build'?(bcounts[ch]||0):(counts[ch]||0));});
+    hint();
+  }
+  $('optShuffle').onchange=function(e){S.shuffle=e.target.checked;};
+  $('optReverse').onchange=function(e){S.reverse=e.target.checked;};
+  $('optScratch').onchange=function(e){S.scratch=e.target.checked;};
+  $('optUnits').onchange=function(e){S.units=e.target.checked;};
+
+  function hint(){
+    var n,txt;
+    if(S.mode==='units'){n=QU.length+UID.length+11;txt=n+' unit questions per round';$('start').disabled=false;}
+    else if(S.mode==='build'){n=buildEqs().length;txt=n?(n+' equation'+(n>1?'s':'')+' to assemble'):'select at least one section';$('start').disabled=n===0;}
+    else{n=selEqs().length;txt=n?(n+' card'+(n>1?'s':'')+' in this deck'):'select at least one section';$('start').disabled=n===0;}
+    $('countHint').textContent=txt;
+    $('start').textContent=S.mode==='units'?'Start units quiz':(S.mode==='build'?'Start build session':'Start session');
+  }
+  $('start').onclick=function(){ if(S.mode==='units')unitsStart(); else if(S.mode==='build')buildStart(); else flashStart(null); };
+
+  function goHome(){['study','buildStudy','unitsStudy','summary'].forEach(function(id){$(id).classList.add('hidden');});$('setup').classList.remove('hidden');updateModeUI();}
+  document.querySelectorAll('.homebtn').forEach(function(b){b.onclick=goHome;});
+
+  /* ============ FLASHCARDS ============ */
+  var F={queue:[],mastered:{},missed:{},reviewCount:{},total:0,cur:null,mCount:0};
+  function flashStart(ids){
+    var list=ids||selEqs().map(function(e){return e.id;});
+    F.queue=S.shuffle?shuffle(list):list.slice();
+    F.mastered={};F.missed={};F.reviewCount={};F.total=list.length;F.mCount=0;
+    $('setup').classList.add('hidden');$('summary').classList.add('hidden');$('study').classList.remove('hidden');
+    $('pTot').textContent=F.total;flashNext();
+  }
+  function flashNext(){
+    if(F.queue.length===0){return flashSummary();}
+    F.cur=EQS[F.queue[0]];var e=F.cur;
+    $('answer').classList.add('hidden');$('answer').classList.remove('rise');
+    $('reveal').classList.remove('hidden');$('gotIt').classList.add('hidden');$('review').classList.add('hidden');
+    $('aName').classList.add('hidden');$('units').classList.add('hidden');$('units').innerHTML='';
+    $('note').classList.add('hidden');$('note').innerHTML='';$('eq').innerHTML='';
+    $('scratch').value='';$('scratch').classList.toggle('hidden',!S.scratch);
+    $('chap').textContent=chapLabel(e.ch);
+    if(S.reverse){$('pLabel').textContent='Name it';$('prompt').innerHTML='<span class="rev-eq"></span>';kr(e.tex,$('prompt').firstChild,false);}
+    else{$('pLabel').textContent='Recall the expression for';$('prompt').textContent=e.name;}
+    flashProgress();
+  }
+  function flashReveal(){
+    var e=F.cur;
+    if(S.reverse){$('aLabel').textContent='Expression for';$('aName').textContent=e.name;$('aName').classList.remove('hidden');kr(e.tex,$('eq'),true);}
+    else{$('aLabel').textContent='Answer';kr(e.tex,$('eq'),true);}
+    if(S.units&&e.unit){$('units').classList.remove('hidden');var ub=document.createElement('b');ub.textContent='units';$('units').appendChild(ub);var us=document.createElement('span');kr(e.unit,us,false);$('units').appendChild(us);}
+    if(e.note){$('note').classList.remove('hidden');var nb=document.createElement('b');nb.textContent='note';$('note').appendChild(nb);var ns=document.createElement('span');kr(e.note,ns,false);$('note').appendChild(ns);}
+    $('answer').classList.remove('hidden');$('answer').classList.add('rise');
+    $('reveal').classList.add('hidden');$('gotIt').classList.remove('hidden');$('review').classList.remove('hidden');
+  }
+  $('reveal').onclick=flashReveal;
+  function flashGrade(ok){
+    var id=F.queue.shift();
+    if(ok){if(!F.mastered[id]){F.mastered[id]=1;F.mCount++;}}
+    else{F.missed[id]=1;F.reviewCount[id]=(F.reviewCount[id]||0)+1;var pos=Math.min(F.queue.length,3+Math.floor(Math.random()*3));F.queue.splice(pos,0,id);}
+    flashNext();
+  }
+  $('gotIt').onclick=function(){flashGrade(true);};
+  $('review').onclick=function(){flashGrade(false);};
+  function flashProgress(){
+    $('pDone').textContent=F.mCount;$('fill').style.width=F.total?(F.mCount/F.total*100)+'%':'0%';
+    var reviewing=F.queue.filter(function(id){return F.reviewCount[id];}).length;var p=$('reviewPill');
+    if(reviewing>0){p.classList.remove('hidden');p.textContent='review '+reviewing;}else{p.classList.add('hidden');}
+  }
+  function flashSummary(){
+    $('study').classList.add('hidden');
+    var missArr=Object.keys(F.missed).map(Number).sort(function(a,b){return (F.reviewCount[b]||0)-(F.reviewCount[a]||0);});
+    var clean=F.total-missArr.length,pct=F.total?Math.round(clean/F.total*100):0;
+    var rows='';
+    if(missArr.length){rows='<div class="misslist"><div class="mh">Needed a second look</div>';missArr.forEach(function(id){var e=EQS[id];rows+='<div class="missitem"><span class="mc2">'+chapTag(e.ch)+'</span><span>'+e.name+'</span><span class="mx">'+(F.reviewCount[id]||1)+'\u00d7</span></div>';});rows+='</div>';}
+    else{rows='<div class="misslist"><div class="mh">Clean run</div><div class="missitem" style="border:none;color:var(--ok)">Everything on the first try.</div></div>';}
+    showSummary('Session complete',F.total+' card'+(F.total>1?'s':'')+' reviewed.',[['green',pct+'%','first-try'],['blue',clean,'clean'],['amber',missArr.length,'reviewed']],rows,[
+      missArr.length?{cls:'',id:'sDrill',txt:'Drill the '+missArr.length+' you missed',fn:function(){flashStart(missArr);}}:null,
+      {cls:'alt',id:'sAgain',txt:'Run the full deck again',fn:function(){flashStart(selEqs().map(function(e){return e.id;}));}},
+      {cls:'ghost',id:'sHome',txt:'Back to home',fn:goHome}
+    ]);
+  }
+
+  /* ============ BUILD ============ */
+  var B={queue:[],total:0,cur:null,placed:[],wrong:false,locked:false,clean:0,cleanSet:{},solved:0,missed:{}};
+  function buildStart(ids){
+    var list=ids||buildEqs().map(function(e){return e.id;});
+    B.queue=S.shuffle?shuffle(list):list.slice();
+    B.total=list.length;B.clean=0;B.cleanSet={};B.solved=0;B.missed={};
+    $('setup').classList.add('hidden');$('summary').classList.add('hidden');$('buildStudy').classList.remove('hidden');
+    $('bTot').textContent=B.total;buildNext();
+  }
+  function buildNext(){
+    if(B.queue.length===0){return buildSummary();}
+    B.cur=BUILD[B.queue[0]];var e=B.cur;
+    B.placed=[];B.wrong=false;B.locked=false;
+    $('bChap').textContent=chapLabel(e.ch);
+    $('bName').innerHTML='';var ns=document.createElement('span');ns.textContent=e.name;$('bName').appendChild(ns);
+    $('bLhs').innerHTML='';kr(e.lhs,$('bLhs'),false);
+    $('bFeedback').className='bfeedback hidden';$('bFeedback').innerHTML='';
+    $('bSubmit').classList.remove('hidden');$('bShow').classList.remove('hidden');$('bNext').classList.add('hidden');
+    renderExpr();renderPalette();buildProgress();
+  }
+  function renderPalette(){
+    var box=$('palette');box.innerHTML='';
+    var keys=shuffle(B.cur.pal.slice());
+    keys.forEach(function(kk){var tile=TK[kk];if(!tile)return;var b=document.createElement('button');b.className='ptile';b.textContent=tile.l;b.onclick=function(){if(B.locked)return;B.placed.push(tile);softReset();renderExpr();};box.appendChild(b);});
+  }
+  function renderExpr(){
+    var box=$('expr');box.innerHTML='';
+    if(B.placed.length===0){var em=document.createElement('span');em.className='expr-empty';em.textContent='tap tiles to build\u2026';box.appendChild(em);return;}
+    B.placed.forEach(function(t){var s=document.createElement('span');s.className='chiptok';s.textContent=t.l;box.appendChild(s);});
+  }
+  function softReset(){ if($('bNext').classList.contains('hidden')){$('bFeedback').className='bfeedback hidden';$('bFeedback').innerHTML='';} }
+  $('bBack').onclick=function(){if(B.locked)return;B.placed.pop();softReset();renderExpr();};
+  $('bClearBtn').onclick=function(){if(B.locked)return;B.placed=[];softReset();renderExpr();};
+  function feedback(cls,msg,showTex){
+    var f=$('bFeedback');f.className='bfeedback '+cls;f.innerHTML='';
+    var m=document.createElement('div');m.textContent=msg;f.appendChild(m);
+    if(showTex){var r=document.createElement('div');r.className='rev';kr(B.cur.lhs+' '+B.cur.tex.replace(/^[^=]*=/,''),r,true);f.appendChild(r);}
+  }
+  function buildCheck(){
+    if(B.locked)return;
+    if(B.placed.length===0){feedback('info','Add tiles to build the right-hand side.',false);return;}
+    var code=B.placed.map(function(t){return t.c;}).join(' ');
+    var res=equiv(B.cur.canon,code,B.cur.vars);
+    if(res.ok){
+      if(!B.wrong){B.clean++;B.cleanSet[B.cur.id]=1;}
+      feedback('good','Correct \u2014 that\u2019s a valid form.',true);
+      lockSolved();
+    }else if(res.reason==='parse'||res.reason==='eval'){
+      B.wrong=true;B.missed[B.cur.id]=1;
+      feedback('bad','That doesn\u2019t parse as a complete expression \u2014 check your parentheses and operators.',false);
+    }else if(res.reason==='range'){
+      B.wrong=true;B.missed[B.cur.id]=1;
+      feedback('bad','That expression breaks down numerically \u2014 check for a stray divide or root.',false);
+    }else{
+      B.wrong=true;B.missed[B.cur.id]=1;
+      feedback('bad','Not equivalent yet \u2014 try another arrangement.',false);
+    }
+  }
+  function lockSolved(){B.locked=true;$('bSubmit').classList.add('hidden');$('bShow').classList.add('hidden');$('bNext').classList.remove('hidden');}
+  $('bSubmit').onclick=buildCheck;
+  $('bShow').onclick=function(){if(B.locked)return;B.wrong=true;B.missed[B.cur.id]=1;feedback('info','Answer:',true);lockSolved();};
+  $('bNext').onclick=function(){B.queue.shift();B.solved++;buildNext();};
+  function buildProgress(){$('bClean').textContent=B.clean;$('bFill').style.width=B.total?((B.total-B.queue.length)/B.total*100)+'%':'0%';}
+  function buildSummary(){
+    $('buildStudy').classList.add('hidden');
+    var missArr=Object.keys(B.missed).map(Number);
+    var pct=B.total?Math.round(B.clean/B.total*100):0;
+    var rows='';
+    if(missArr.length){rows='<div class="misslist"><div class="mh">Needed a retry or the answer</div>';missArr.forEach(function(id){var e=BUILD[id];rows+='<div class="missitem"><span class="mc2">'+chapTag(e.ch)+'</span><span>'+e.name+'</span></div>';});rows+='</div>';}
+    else{rows='<div class="misslist"><div class="mh">Clean run</div><div class="missitem" style="border:none;color:var(--ok)">Every equation first try.</div></div>';}
+    showSummary('Build complete',B.total+' equation'+(B.total>1?'s':'')+' assembled.',[['green',pct+'%','first-try'],['blue',B.clean,'clean'],['amber',missArr.length,'retried']],rows,[
+      missArr.length?{cls:'',id:'sDrill',txt:'Drill the '+missArr.length+' you missed',fn:function(){buildStart(missArr);}}:null,
+      {cls:'alt',id:'sAgain',txt:'Build the full set again',fn:function(){buildStart(buildEqs().map(function(e){return e.id;}));}},
+      {cls:'ghost',id:'sHome',txt:'Back to home',fn:goHome}
+    ]);
+  }
+
+  /* ============ UNITS ============ */
+  var U={deck:[],idx:0,total:0,correct:0,answered:false,missed:[]};
+  function unitsStart(){
+    U.deck=buildUnitsDeck();U.idx=0;U.total=U.deck.length;U.correct=0;U.missed=[];
+    $('setup').classList.add('hidden');$('summary').classList.add('hidden');$('unitsStudy').classList.remove('hidden');
+    $('uTot').textContent=U.total;unitsNext();
+  }
+  function unitsNext(){
+    if(U.idx>=U.deck.length){return unitsSummary();}
+    U.answered=false;var Q=U.deck[U.idx];
+    $('uKind').textContent=Q.kind;
+    $('uQ').innerHTML='';kr(Q.q,$('uQ'),false);
+    $('uNext').classList.add('hidden');
+    var box=$('uOpts');box.innerHTML='';
+    Q.opts.forEach(function(o,i){
+      var b=document.createElement('button');b.className='mcopt';b.setAttribute('data-i',i);
+      var kk=document.createElement('span');kk.className='mck';kk.textContent=(i+1);
+      var tx=document.createElement('span');kr(o.tex,tx,false);
+      b.appendChild(kk);b.appendChild(tx);
+      b.onclick=function(){unitsPick(o,b);};
+      box.appendChild(b);
+    });
+    unitsProgress();
+  }
+  function unitsPick(o,btn){
+    if(U.answered)return;U.answered=true;var Q=U.deck[U.idx];
+    var opts=$('uOpts').querySelectorAll('.mcopt');
+    opts.forEach(function(el,i){el.classList.add('dim');if(Q.opts[i].ok){el.classList.remove('dim');el.classList.add('correct');}});
+    if(o.ok){U.correct++;}else{btn.classList.remove('dim');btn.classList.add('wrong');U.missed.push(Q);}
+    $('uNext').classList.remove('hidden');unitsProgress();
+  }
+  $('uNext').onclick=function(){U.idx++;unitsNext();};
+  function unitsProgress(){$('uDone').textContent=U.correct;$('uFill').style.width=U.total?(U.idx/U.total*100)+'%':'0%';}
+  function unitsSummary(){
+    $('unitsStudy').classList.add('hidden');
+    var pct=U.total?Math.round(U.correct/U.total*100):0;
+    var rows='<div class="misslist"><div class="mh">'+(U.missed.length?'Missed':'Perfect round')+'</div>';
+    if(U.missed.length){U.missed.forEach(function(Q){var s=document.createElement('span');rows+='<div class="missitem"><span class="mc2">'+Q.kind.split(' ')[0]+'</span><span class="uqm"></span></div>';});rows+='</div>';}
+    else{rows+='<div class="missitem" style="border:none;color:var(--ok)">Every unit question correct.</div></div>';}
+    showSummary('Units quiz complete',U.total+' questions.',[['green',pct+'%','correct'],['blue',U.correct,'right'],['amber',U.total-U.correct,'missed']],rows,[
+      {cls:'',id:'sAgain',txt:'New units round',fn:unitsStart},
+      {cls:'ghost',id:'sHome',txt:'Back to home',fn:goHome}
+    ]);
+    // render missed questions as katex
+    if(U.missed.length){var items=$('summary').querySelectorAll('.uqm');U.missed.forEach(function(Q,i){if(items[i])kr(Q.q.replace('\\text{?}','?').replace(' \\text{:}',''),items[i],false);});}
+  }
+
+  /* ============ SHARED SUMMARY ============ */
+  function showSummary(title,sub,scores,rowsHtml,btns){
+    var sum=$('summary');sum.classList.remove('hidden');
+    var h='<h2>'+title+'</h2><p class="sub">'+sub+'</p><div class="scorerow">';
+    scores.forEach(function(s){h+='<div class="score '+s[0]+'"><div class="v">'+s[1]+'</div><div class="l">'+s[2]+'</div></div>';});
+    h+='</div>'+rowsHtml+'<div class="sumbtns" id="sumbtns"></div>';
+    sum.innerHTML=h;
+    var bb=$('sumbtns');
+    btns.forEach(function(b){if(!b)return;var el=document.createElement('button');el.className='go '+b.cls;el.id=b.id;el.textContent=b.txt;el.onclick=b.fn;bb.appendChild(el);});
+  }
+
+  /* ============ KEYBOARD ============ */
+  document.addEventListener('keydown',function(e){
+    if(!$('study').classList.contains('hidden')){
+      if(document.activeElement&&document.activeElement.tagName==='TEXTAREA'){if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();if(!$('reveal').classList.contains('hidden'))flashReveal();}return;}
+      if((e.key===' '||e.key==='Enter')&&!$('reveal').classList.contains('hidden')){e.preventDefault();flashReveal();}
+      else if(e.key==='1'&&!$('gotIt').classList.contains('hidden')){flashGrade(true);}
+      else if(e.key==='2'&&!$('review').classList.contains('hidden')){flashGrade(false);}
+    } else if(!$('buildStudy').classList.contains('hidden')){
+      if(e.key==='Enter'){e.preventDefault();if(!$('bNext').classList.contains('hidden'))$('bNext').click();else buildCheck();}
+    } else if(!$('unitsStudy').classList.contains('hidden')){
+      if(!U.answered&&/^[1-4]$/.test(e.key)){var els=$('uOpts').querySelectorAll('.mcopt');var idx=+e.key-1;if(els[idx])els[idx].click();}
+      else if(e.key==='Enter'&&!$('uNext').classList.contains('hidden'))$('uNext').click();
+    }
+  });
+
+  /* init */
+  kr('1\\ \\mathrm{V}=\\mathrm{J/C}',$('un1'),false);
+  updateModeUI();
+})();
+</script>
+</body>
+</html>
