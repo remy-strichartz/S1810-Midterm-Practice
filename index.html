@@ -61,9 +61,27 @@
   .go{width:100%;padding:15px;border:none;border-radius:11px;background:var(--accent);color:#fff;font-family:var(--sans);font-size:14.5px;font-weight:600;cursor:pointer;transition:filter .12s,transform .06s}
   .go:hover{filter:brightness(1.06)} .go:active{transform:translateY(1px)} .go:disabled{opacity:.5;cursor:not-allowed}
   .count-hint{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.04em}
-  .navrow{display:flex;margin-bottom:10px}
+  .navrow{display:flex;align-items:center;gap:12px;margin-bottom:10px}
   .homebtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer}
   .homebtn:hover{border-color:var(--line-strong);color:var(--ink)}
+  .bankTitle{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .suggest{font-size:13px;color:var(--muted);background:var(--accent-soft);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:0 0 16px;line-height:1.5}
+  .linkbtn{background:none;border:none;color:var(--accent);cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:600;padding:0}
+  .linkbtn:hover{text-decoration:underline}
+  .bankNote{font-size:13.5px;color:var(--muted);margin:2px 0 4px;line-height:1.6}
+  .bankwrap{display:flex;flex-direction:column;gap:20px;margin-bottom:16px}
+  .bankgroup{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .bankhead{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}
+  .bankbadge{width:26px;height:26px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border-radius:7px;background:var(--accent-soft);color:var(--accent-ink);font-family:var(--mono);font-size:12px;font-weight:600}
+  .bankhead .bt{font-size:14px;font-weight:600}
+  .bankcount{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .bankitem{display:flex;gap:14px;align-items:baseline;padding:12px 18px;border-top:1px solid var(--line)}
+  .bankitem:first-of-type{border-top:none}
+  .bankitem .bnum{font-family:var(--mono);font-size:11px;color:var(--faint);flex:0 0 22px;text-align:right;padding-top:2px}
+  .bankitem .btext{flex:1;min-width:0}
+  .bankitem .bq{font-size:14px;line-height:1.4}
+  .bankitem .beq{margin-top:5px;font-size:15px;color:var(--muted);overflow-x:auto}
+  .bankitem .beq .katex{font-size:1em}
   .topbar{display:flex;align-items:center;gap:14px;margin-bottom:14px}
   .stat{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap} .stat b{color:var(--ink)}
   .track{flex:1;height:6px;background:var(--track);border-radius:3px;overflow:hidden}
@@ -142,7 +160,6 @@
   .sumbtns{display:flex;flex-direction:column;gap:10px;margin-top:20px}
   .go.alt{background:var(--panel);color:var(--accent);border:1px solid var(--accent)} .go.alt:hover{background:var(--accent-soft);filter:none}
   .go.ghost{background:none;color:var(--muted);border:1px solid var(--line)} .go.ghost:hover{background:var(--panel);filter:none}
-  .colophon{text-align:center;margin-top:26px;font-family:var(--mono);font-size:10.5px;color:var(--faint);line-height:1.8}
   @media (max-width:520px){.prompt{font-size:19px}.eq{font-size:20px}.actions{flex-direction:column}.card{padding:26px 20px}.qtext{font-size:18px}}
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
@@ -166,8 +183,11 @@
       <button class="seg on" data-mode="flash">Flashcards</button>
       <button class="seg" data-mode="build">Build</button>
       <button class="seg" data-mode="units">Units</button>
+      <button class="seg" data-mode="bank">Bank</button>
     </div>
+    <div class="suggest hidden" id="bankSuggest">Not sure what&rsquo;s in the deck? <button class="linkbtn" id="openBank" type="button">Skim the full question bank first &rarr;</button></div>
     <div class="unitsNote hidden" id="unitsNote">Multiple-choice quiz on the SI units of each quantity and on unit conversions (prefixes, eV, and unit identities like <span id="un1"></span>).</div>
+    <div class="bankNote hidden" id="bankNote">A read-only index of every card, grouped by section. Pick your scope, then open the bank to review before drilling.</div>
     <p class="eyebrow" id="scopeLbl">Pick your scope</p>
     <div class="chips" id="chips"></div>
     <div class="selall" id="selallRow"><button id="selAll">select all</button><button id="selNone">clear</button></div>
@@ -260,7 +280,11 @@
 
   <section id="summary" class="summary hidden"></section>
 
-  <div class="colophon">Physical laws are facts, not copyrightable text · rendered for study<br>fork it, edit the deck, share the link</div>
+  <section id="bankView" class="hidden">
+    <div class="navrow"><button class="homebtn" type="button">← home</button><span class="bankTitle" id="bankTitle">Question bank</span></div>
+    <div class="bankwrap" id="bankwrap"></div>
+    <div class="actions"><button class="btn btn-reveal" id="bankToFlash">Study these as flashcards</button></div>
+  </section>
 </div>
 
 <script>
@@ -610,14 +634,17 @@
     var m=S.mode;
     $('diffbar').classList.toggle('hidden',m!=='build');
     $('unitsNote').classList.toggle('hidden',m!=='units');
+    $('bankNote').classList.toggle('hidden',m!=='bank');
+    $('bankSuggest').classList.toggle('hidden',m!=='flash');
     $('chips').classList.toggle('hidden',m==='units');
     $('selallRow').classList.toggle('hidden',m==='units');
     $('scopeLbl').classList.toggle('hidden',m==='units');
     $('optsBlock').classList.toggle('hidden',m!=='flash');
-    // update chip counts for build vs flash
+    // update chip counts for build vs flash/bank
     document.querySelectorAll('.chip .c').forEach(function(sp){var ch=sp.getAttribute('data-cnt');sp.textContent=(m==='build'?(bcounts[ch]||0):(counts[ch]||0));});
     hint();
   }
+  function setMode(m){S.mode=m;document.querySelectorAll('.seg').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-mode')===m);});updateModeUI();}
   $('optShuffle').onchange=function(e){S.shuffle=e.target.checked;};
   $('optReverse').onchange=function(e){S.reverse=e.target.checked;};
   $('optScratch').onchange=function(e){S.scratch=e.target.checked;};
@@ -627,14 +654,52 @@
     var n,txt;
     if(S.mode==='units'){n=QU.length+UID.length+11;txt=n+' unit questions per round';$('start').disabled=false;}
     else if(S.mode==='build'){n=buildEqs().length;txt=n?(n+' equation'+(n>1?'s':'')+' to assemble'):'select at least one section';$('start').disabled=n===0;}
+    else if(S.mode==='bank'){n=selEqs().length;txt=n?(n+' card'+(n>1?'s':'')+' across your selected sections'):'select at least one section';$('start').disabled=n===0;}
     else{n=selEqs().length;txt=n?(n+' card'+(n>1?'s':'')+' in this deck'):'select at least one section';$('start').disabled=n===0;}
     $('countHint').textContent=txt;
-    $('start').textContent=S.mode==='units'?'Start units quiz':(S.mode==='build'?'Start build session':'Start session');
+    $('start').textContent=S.mode==='units'?'Start units quiz':(S.mode==='build'?'Start build session':(S.mode==='bank'?'Open question bank':'Start session'));
   }
-  $('start').onclick=function(){ if(S.mode==='units')unitsStart(); else if(S.mode==='build')buildStart(); else flashStart(null); };
+  $('start').onclick=function(){ if(S.mode==='units')unitsStart(); else if(S.mode==='build')buildStart(); else if(S.mode==='bank')openBankView(); else flashStart(null); };
 
-  function goHome(){['study','buildStudy','unitsStudy','summary'].forEach(function(id){$(id).classList.add('hidden');});$('setup').classList.remove('hidden');updateModeUI();}
+  function goHome(){['study','buildStudy','unitsStudy','summary','bankView'].forEach(function(id){$(id).classList.add('hidden');});$('setup').classList.remove('hidden');updateModeUI();}
   document.querySelectorAll('.homebtn').forEach(function(b){b.onclick=goHome;});
+
+  /* ============ QUESTION BANK ============ */
+  function openBankView(){
+    $('setup').classList.add('hidden');$('summary').classList.add('hidden');$('bankView').classList.remove('hidden');
+    var wrap=$('bankwrap');wrap.innerHTML='';
+    var chosen=CHIP_ORDER.filter(function(ch){return sel[ch];});
+    var totalCards=0;
+    if(chosen.length===0){
+      var empty=document.createElement('div');empty.className='bankNote';empty.style.padding='20px';empty.textContent='No sections selected. Go back home and pick at least one section to review.';
+      wrap.appendChild(empty);$('bankToFlash').disabled=true;$('bankTitle').textContent='Question bank';return;
+    }
+    chosen.forEach(function(ch){
+      var items=EQS.filter(function(e){return String(e.ch)===String(ch);});
+      if(!items.length)return;
+      totalCards+=items.length;
+      var g=document.createElement('div');g.className='bankgroup';
+      var head=document.createElement('div');head.className='bankhead';
+      var badge=document.createElement('span');badge.className='bankbadge';badge.textContent=(isNaN(+ch)?(BADGE[ch]||'\u2022'):ch);
+      var bt=document.createElement('span');bt.className='bt';bt.textContent=chapLabel(ch);
+      var cnt=document.createElement('span');cnt.className='bankcount';cnt.textContent=items.length+(items.length>1?' cards':' card');
+      head.appendChild(badge);head.appendChild(bt);head.appendChild(cnt);g.appendChild(head);
+      items.forEach(function(e,i){
+        var it=document.createElement('div');it.className='bankitem';
+        var num=document.createElement('span');num.className='bnum';num.textContent=(i+1);
+        var txt=document.createElement('div');txt.className='btext';
+        var q=document.createElement('div');q.className='bq';q.textContent=e.name;
+        var eq=document.createElement('div');eq.className='beq';kr(e.tex,eq,false);
+        txt.appendChild(q);txt.appendChild(eq);
+        it.appendChild(num);it.appendChild(txt);g.appendChild(it);
+      });
+      wrap.appendChild(g);
+    });
+    $('bankTitle').textContent='Question bank \u00b7 '+totalCards+' card'+(totalCards>1?'s':'');
+    $('bankToFlash').disabled=false;
+  }
+  $('openBank').onclick=openBankView;
+  $('bankToFlash').onclick=function(){ $('bankView').classList.add('hidden'); setMode('flash'); flashStart(null); };
 
   /* ============ FLASHCARDS ============ */
   var F={queue:[],mastered:{},missed:{},reviewCount:{},total:0,cur:null,mCount:0};
